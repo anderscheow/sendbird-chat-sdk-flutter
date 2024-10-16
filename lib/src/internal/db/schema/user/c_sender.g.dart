@@ -9,9 +9,9 @@ part of 'c_sender.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CSenderSchema = Schema(
+const CSenderSchema = Schema(
   name: r'CSender',
-  id: BigInt.parse('-412392496748020901').toInt(),
+  id: -412392496748020901,
   properties: {
     r'isBlockedByMe': PropertySchema(
       id: 0,

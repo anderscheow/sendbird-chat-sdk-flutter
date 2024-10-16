@@ -13,9 +13,9 @@ extension GetCAdminMessageCollection on Isar {
   IsarCollection<CAdminMessage> get cAdminMessages => this.collection();
 }
 
-final CAdminMessageSchema = CollectionSchema(
+const CAdminMessageSchema = CollectionSchema(
   name: r'CAdminMessage',
-  id: BigInt.parse('-4690870483801023253').toInt(),
+  id: -4690870483801023253,
   properties: {
     r'allMetaArrays': PropertySchema(
       id: 0,
@@ -186,7 +186,7 @@ final CAdminMessageSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'rootId': IndexSchema(
-      id: BigInt.parse('5087693435549841488').toInt(),
+      id: 5087693435549841488,
       name: r'rootId',
       unique: true,
       replace: true,
@@ -199,7 +199,7 @@ final CAdminMessageSchema = CollectionSchema(
       ],
     ),
     r'messageType_rootId': IndexSchema(
-      id: BigInt.parse('-7060804333380842370').toInt(),
+      id: -7060804333380842370,
       name: r'messageType_rootId',
       unique: false,
       replace: false,
@@ -217,7 +217,7 @@ final CAdminMessageSchema = CollectionSchema(
       ],
     ),
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: false,
       replace: false,
@@ -230,7 +230,7 @@ final CAdminMessageSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -261,7 +261,7 @@ final CAdminMessageSchema = CollectionSchema(
   getId: _cAdminMessageGetId,
   getLinks: _cAdminMessageGetLinks,
   attach: _cAdminMessageAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cAdminMessageEstimateSize(

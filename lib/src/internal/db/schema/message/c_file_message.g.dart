@@ -13,9 +13,9 @@ extension GetCFileMessageCollection on Isar {
   IsarCollection<CFileMessage> get cFileMessages => this.collection();
 }
 
-final CFileMessageSchema = CollectionSchema(
+const CFileMessageSchema = CollectionSchema(
   name: r'CFileMessage',
-  id: BigInt.parse('5183317174548444251').toInt(),
+  id: 5183317174548444251,
   properties: {
     r'allMetaArrays': PropertySchema(
       id: 0,
@@ -223,7 +223,7 @@ final CFileMessageSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'rootId': IndexSchema(
-      id: BigInt.parse('5087693435549841488').toInt(),
+      id: 5087693435549841488,
       name: r'rootId',
       unique: true,
       replace: true,
@@ -236,7 +236,7 @@ final CFileMessageSchema = CollectionSchema(
       ],
     ),
     r'messageType_rootId': IndexSchema(
-      id: BigInt.parse('-7060804333380842370').toInt(),
+      id: -7060804333380842370,
       name: r'messageType_rootId',
       unique: false,
       replace: false,
@@ -254,7 +254,7 @@ final CFileMessageSchema = CollectionSchema(
       ],
     ),
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: false,
       replace: false,
@@ -267,7 +267,7 @@ final CFileMessageSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -302,7 +302,7 @@ final CFileMessageSchema = CollectionSchema(
   getId: _cFileMessageGetId,
   getLinks: _cFileMessageGetLinks,
   attach: _cFileMessageAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cFileMessageEstimateSize(
@@ -5848,9 +5848,9 @@ extension CFileMessageQueryProperty
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CThumbnailSchema = Schema(
+const CThumbnailSchema = Schema(
   name: r'CThumbnail',
-  id: BigInt.parse('9179756824618085965').toInt(),
+  id: 9179756824618085965,
   properties: {
     r'height': PropertySchema(
       id: 0,
@@ -6569,9 +6569,9 @@ extension CThumbnailQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CFileMessageCreateParamsSchema = Schema(
+const CFileMessageCreateParamsSchema = Schema(
   name: r'CFileMessageCreateParams',
-  id: BigInt.parse('-28171588097914807').toInt(),
+  id: -28171588097914807,
   properties: {
     r'customType': PropertySchema(
       id: 0,
@@ -7863,9 +7863,9 @@ extension CFileMessageCreateParamsQueryObject on QueryBuilder<
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CFileInfoSchema = Schema(
+const CFileInfoSchema = Schema(
   name: r'CFileInfo',
-  id: BigInt.parse('996992686443270943').toInt(),
+  id: 996992686443270943,
   properties: {
     r'fileName': PropertySchema(
       id: 0,
@@ -8658,9 +8658,9 @@ extension CFileInfoQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CSizeSchema = Schema(
+const CSizeSchema = Schema(
   name: r'CSize',
-  id: BigInt.parse('5020865885922142944').toInt(),
+  id: 5020865885922142944,
   properties: {
     r'height': PropertySchema(
       id: 0,

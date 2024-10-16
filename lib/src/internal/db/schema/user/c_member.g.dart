@@ -9,9 +9,9 @@ part of 'c_member.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CMemberSchema = Schema(
+const CMemberSchema = Schema(
   name: r'CMember',
-  id: BigInt.parse('3727521751473440892').toInt(),
+  id: 3727521751473440892,
   properties: {
     r'isBlockedByMe': PropertySchema(
       id: 0,
@@ -611,9 +611,9 @@ extension CMemberQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CRestrictionInfoSchema = Schema(
+const CRestrictionInfoSchema = Schema(
   name: r'CRestrictionInfo',
-  id: BigInt.parse('981966653832094849').toInt(),
+  id: 981966653832094849,
   properties: {
     r'description': PropertySchema(
       id: 0,

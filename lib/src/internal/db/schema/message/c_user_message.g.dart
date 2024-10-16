@@ -13,9 +13,9 @@ extension GetCUserMessageCollection on Isar {
   IsarCollection<CUserMessage> get cUserMessages => this.collection();
 }
 
-final CUserMessageSchema = CollectionSchema(
+const CUserMessageSchema = CollectionSchema(
   name: r'CUserMessage',
-  id: BigInt.parse('-5236260095734839382').toInt(),
+  id: -5236260095734839382,
   properties: {
     r'allMetaArrays': PropertySchema(
       id: 0,
@@ -202,7 +202,7 @@ final CUserMessageSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'rootId': IndexSchema(
-      id: BigInt.parse('5087693435549841488').toInt(),
+      id: 5087693435549841488,
       name: r'rootId',
       unique: true,
       replace: true,
@@ -215,7 +215,7 @@ final CUserMessageSchema = CollectionSchema(
       ],
     ),
     r'messageType_rootId': IndexSchema(
-      id: BigInt.parse('-7060804333380842370').toInt(),
+      id: -7060804333380842370,
       name: r'messageType_rootId',
       unique: false,
       replace: false,
@@ -233,7 +233,7 @@ final CUserMessageSchema = CollectionSchema(
       ],
     ),
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: false,
       replace: false,
@@ -246,7 +246,7 @@ final CUserMessageSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -280,7 +280,7 @@ final CUserMessageSchema = CollectionSchema(
   getId: _cUserMessageGetId,
   getLinks: _cUserMessageGetLinks,
   attach: _cUserMessageAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cUserMessageEstimateSize(
@@ -5390,9 +5390,9 @@ extension CUserMessageQueryProperty
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CPollSchema = Schema(
+const CPollSchema = Schema(
   name: r'CPoll',
-  id: BigInt.parse('-6002142452581641545').toInt(),
+  id: -6002142452581641545,
   properties: {
     r'allowMultipleVotes': PropertySchema(
       id: 0,
@@ -6601,9 +6601,9 @@ extension CPollQueryObject on QueryBuilder<CPoll, CPoll, QFilterCondition> {
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CPollDataSchema = Schema(
+const CPollDataSchema = Schema(
   name: r'CPollData',
-  id: BigInt.parse('213822990569344781').toInt(),
+  id: 213822990569344781,
   properties: {
     r'text': PropertySchema(
       id: 0,
@@ -6800,9 +6800,9 @@ extension CPollDataQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CPollOptionSchema = Schema(
+const CPollOptionSchema = Schema(
   name: r'CPollOption',
-  id: BigInt.parse('-1226183442370331930').toInt(),
+  id: -1226183442370331930,
   properties: {
     r'createdAt': PropertySchema(
       id: 0,

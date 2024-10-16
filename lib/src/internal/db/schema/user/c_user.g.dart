@@ -13,9 +13,9 @@ extension GetCUserCollection on Isar {
   IsarCollection<CUser> get cUsers => this.collection();
 }
 
-final CUserSchema = CollectionSchema(
+const CUserSchema = CollectionSchema(
   name: r'CUser',
-  id: BigInt.parse('892440936217059961').toInt(),
+  id: 892440936217059961,
   properties: {
     r'connectionStatus': PropertySchema(
       id: 0,
@@ -81,7 +81,7 @@ final CUserSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'userId': IndexSchema(
-      id: BigInt.parse('-2005826577402374815').toInt(),
+      id: -2005826577402374815,
       name: r'userId',
       unique: true,
       replace: true,
@@ -99,7 +99,7 @@ final CUserSchema = CollectionSchema(
   getId: _cUserGetId,
   getLinks: _cUserGetLinks,
   attach: _cUserAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cUserEstimateSize(

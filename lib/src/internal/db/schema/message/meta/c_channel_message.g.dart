@@ -13,9 +13,9 @@ extension GetCChannelMessageCollection on Isar {
   IsarCollection<CChannelMessage> get cChannelMessages => this.collection();
 }
 
-final CChannelMessageSchema = CollectionSchema(
+const CChannelMessageSchema = CollectionSchema(
   name: r'CChannelMessage',
-  id: BigInt.parse('-5850314032481753759').toInt(),
+  id: -5850314032481753759,
   properties: {
     r'channelType': PropertySchema(
       id: 0,
@@ -68,7 +68,7 @@ final CChannelMessageSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'rootId': IndexSchema(
-      id: BigInt.parse('5087693435549841488').toInt(),
+      id: 5087693435549841488,
       name: r'rootId',
       unique: true,
       replace: true,
@@ -81,7 +81,7 @@ final CChannelMessageSchema = CollectionSchema(
       ],
     ),
     r'messageType_rootId': IndexSchema(
-      id: BigInt.parse('-7060804333380842370').toInt(),
+      id: -7060804333380842370,
       name: r'messageType_rootId',
       unique: false,
       replace: false,
@@ -99,7 +99,7 @@ final CChannelMessageSchema = CollectionSchema(
       ],
     ),
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: false,
       replace: false,
@@ -112,7 +112,7 @@ final CChannelMessageSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -130,7 +130,7 @@ final CChannelMessageSchema = CollectionSchema(
       ],
     ),
     r'createdAt': IndexSchema(
-      id: BigInt.parse('-3433535483987302584').toInt(),
+      id: -3433535483987302584,
       name: r'createdAt',
       unique: false,
       replace: false,
@@ -143,7 +143,7 @@ final CChannelMessageSchema = CollectionSchema(
       ],
     ),
     r'sendingStatus': IndexSchema(
-      id: BigInt.parse('208667966773972562').toInt(),
+      id: 208667966773972562,
       name: r'sendingStatus',
       unique: false,
       replace: false,
@@ -161,7 +161,7 @@ final CChannelMessageSchema = CollectionSchema(
   getId: _cChannelMessageGetId,
   getLinks: _cChannelMessageGetLinks,
   attach: _cChannelMessageAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cChannelMessageEstimateSize(
