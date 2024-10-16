@@ -1,3 +1,8 @@
+## v4.3.1 (Oct 16, 2024)
+
+### Improvements
+- Fixed generated json key is not snake case
+
 ## v4.3.0 (Oct 16, 2024)
 
 ### Improvements
