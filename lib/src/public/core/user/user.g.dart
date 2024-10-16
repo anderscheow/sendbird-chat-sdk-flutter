@@ -7,19 +7,19 @@ part of 'user.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      userId: json['userId'] as String,
+      userId: json['user_id'] as String,
       nickname: json['nickname'] as String,
-      profileUrl: json['profileUrl'] as String? ?? '',
+      profileUrl: json['profile_url'] as String? ?? '',
       connectionStatus: json['is_online'] == null
           ? UserConnectionStatus.notAvailable
           : boolToConnectionStatus(json['is_online'] as bool?),
-      lastSeenAt: (json['lastSeenAt'] as num?)?.toInt(),
-      isActive: json['isActive'] as bool? ?? true,
-      preferredLanguages: (json['preferredLanguages'] as List<dynamic>?)
+      lastSeenAt: (json['last_seen_at'] as num?)?.toInt(),
+      isActive: json['is_active'] as bool? ?? true,
+      preferredLanguages: (json['preferred_languages'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      friendDiscoveryKey: json['friendDiscoveryKey'] as String? ?? '',
-      friendName: json['friendName'] as String? ?? '',
+      friendDiscoveryKey: json['friend_discovery_key'] as String? ?? '',
+      friendName: json['friend_name'] as String? ?? '',
       metaData: (json['metadata'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, e as String),
           ) ??
@@ -28,15 +28,15 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'userId': instance.userId,
+      'user_id': instance.userId,
       'nickname': instance.nickname,
-      'profileUrl': instance.profileUrl,
+      'profile_url': instance.profileUrl,
       'is_online': connectionStatusToBool(instance.connectionStatus),
-      'lastSeenAt': instance.lastSeenAt,
-      'isActive': instance.isActive,
-      'preferredLanguages': instance.preferredLanguages,
-      'friendDiscoveryKey': instance.friendDiscoveryKey,
-      'friendName': instance.friendName,
+      'last_seen_at': instance.lastSeenAt,
+      'is_active': instance.isActive,
+      'preferred_languages': instance.preferredLanguages,
+      'friend_discovery_key': instance.friendDiscoveryKey,
+      'friend_name': instance.friendName,
       'metadata': instance.metaData,
       'require_auth_for_profile_image': instance.requireAuth,
     };

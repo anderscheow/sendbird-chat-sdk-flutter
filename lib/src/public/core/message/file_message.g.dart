@@ -7,12 +7,12 @@ part of 'file_message.dart';
 // **************************************************************************
 
 FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
-      channelUrl: json['channelUrl'] as String,
+      channelUrl: json['channel_url'] as String,
       channelType: $enumDecodeNullable(
-              _$ChannelTypeEnumMap, json['channelType'],
+              _$ChannelTypeEnumMap, json['channel_type'],
               unknownValue: ChannelType.group) ??
           ChannelType.group,
-      messageId: (json['messageId'] as num?)?.toInt() ?? 0,
+      messageId: (json['message_id'] as num?)?.toInt() ?? 0,
       url: json['url'] as String,
       name: json['name'] as String?,
       size: (json['size'] as num?)?.toInt() ?? 0,
@@ -20,32 +20,33 @@ FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
       thumbnails: (json['thumbnails'] as List<dynamic>?)
           ?.map((e) => Thumbnail.fromJson(e as Map<String, dynamic>))
           .toList(),
-      requireAuth: json['requireAuth'] as bool? ?? false,
-      requestId: json['requestId'] as String?,
+      requireAuth: json['require_auth'] as bool? ?? false,
+      requestId: json['request_id'] as String?,
       message: json['message'] as String?,
       sendingStatus:
-          $enumDecodeNullable(_$SendingStatusEnumMap, json['sendingStatus']),
+          $enumDecodeNullable(_$SendingStatusEnumMap, json['sending_status']),
       sender: json['user'] == null
           ? null
           : Sender.fromJson(json['user'] as Map<String, dynamic>),
-      mentionedUsers: (json['mentionedUsers'] as List<dynamic>?)
+      mentionedUsers: (json['mentioned_users'] as List<dynamic>?)
               ?.map((e) => User.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       mentionType: $enumDecodeNullable(
-              _$MentionTypeEnumMap, json['mentionType'],
+              _$MentionTypeEnumMap, json['mention_type'],
               unknownValue: MentionType.users) ??
           MentionType.users,
-      createdAt: (json['createdAt'] as num?)?.toInt() ?? 0,
-      updatedAt: (json['updatedAt'] as num?)?.toInt() ?? 0,
-      parentMessageId: (json['parentMessageId'] as num?)?.toInt(),
-      threadInfo: json['threadInfo'] == null
+      createdAt: (json['created_at'] as num?)?.toInt() ?? 0,
+      updatedAt: (json['updated_at'] as num?)?.toInt() ?? 0,
+      parentMessageId: (json['parent_message_id'] as num?)?.toInt(),
+      threadInfo: json['thread_info'] == null
           ? null
-          : ThreadInfo.fromJson(json['threadInfo'] as Map<String, dynamic>),
-      customType: json['customType'] as String?,
+          : ThreadInfo.fromJson(json['thread_info'] as Map<String, dynamic>),
+      customType: json['custom_type'] as String?,
       messageSurvivalSeconds:
-          (json['messageSurvivalSeconds'] as num?)?.toInt() ?? -1,
-      forceUpdateLastMessage: json['forceUpdateLastMessage'] as bool? ?? false,
+          (json['message_survival_seconds'] as num?)?.toInt() ?? -1,
+      forceUpdateLastMessage:
+          json['force_update_last_message'] as bool? ?? false,
       isSilent: json['silent'] as bool? ?? false,
       isOperatorMessage: json['is_op_msg'] as bool? ?? false,
       data: TypeChecker.fromJsonToNullableString(json['data']),
@@ -64,42 +65,42 @@ FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
       ..extendedMessage =
           json['extended_message'] as Map<String, dynamic>? ?? {}
       ..isReplyToChannel = json['is_reply_to_channel'] as bool? ?? false
-      ..errorCode = (json['errorCode'] as num?)?.toInt();
+      ..errorCode = (json['error_code'] as num?)?.toInt();
 
 Map<String, dynamic> _$FileMessageToJson(FileMessage instance) =>
     <String, dynamic>{
-      'channelUrl': instance.channelUrl,
-      'channelType': _$ChannelTypeEnumMap[instance.channelType]!,
+      'channel_url': instance.channelUrl,
+      'channel_type': _$ChannelTypeEnumMap[instance.channelType]!,
       'data': instance.data,
-      'customType': instance.customType,
-      'mentionType': _$MentionTypeEnumMap[instance.mentionType]!,
-      'mentionedUsers': instance.mentionedUsers,
+      'custom_type': instance.customType,
+      'mention_type': _$MentionTypeEnumMap[instance.mentionType]!,
+      'mentioned_users': instance.mentionedUsers,
       'sorted_metaarray': instance.allMetaArrays,
       'extended_message': instance.extendedMessage,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'messageId': instance.messageId,
-      'requestId': instance.requestId,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'message_id': instance.messageId,
+      'request_id': instance.requestId,
       'message': instance.message,
-      'sendingStatus': _$SendingStatusEnumMap[instance.sendingStatus],
+      'sending_status': _$SendingStatusEnumMap[instance.sendingStatus],
       'is_reply_to_channel': instance.isReplyToChannel,
-      'parentMessageId': instance.parentMessageId,
+      'parent_message_id': instance.parentMessageId,
       'parent_message_info': instance.parentMessage,
-      'threadInfo': instance.threadInfo,
-      'messageSurvivalSeconds': instance.messageSurvivalSeconds,
+      'thread_info': instance.threadInfo,
+      'message_survival_seconds': instance.messageSurvivalSeconds,
       'silent': instance.isSilent,
-      'errorCode': instance.errorCode,
+      'error_code': instance.errorCode,
       'is_op_msg': instance.isOperatorMessage,
       'og_tag': instance.ogMetaData,
       'reactions': instance.reactions,
-      'forceUpdateLastMessage': instance.forceUpdateLastMessage,
+      'force_update_last_message': instance.forceUpdateLastMessage,
       'user': instance.sender,
       'url': instance.url,
       'name': instance.name,
       'size': instance.size,
       'type': instance.type,
       'thumbnails': instance.thumbnails,
-      'requireAuth': instance.requireAuth,
+      'require_auth': instance.requireAuth,
     };
 
 const _$ChannelTypeEnumMap = {
@@ -123,18 +124,18 @@ const _$MentionTypeEnumMap = {
 
 Thumbnail _$ThumbnailFromJson(Map<String, dynamic> json) => Thumbnail(
       json['url'] as String,
-      json['plainUrl'] as String?,
+      json['plain_url'] as String?,
       (json['height'] as num?)?.toDouble(),
       (json['width'] as num?)?.toDouble(),
-      (json['realHeight'] as num?)?.toDouble(),
-      (json['realWidth'] as num?)?.toDouble(),
+      (json['real_height'] as num?)?.toDouble(),
+      (json['real_width'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$ThumbnailToJson(Thumbnail instance) => <String, dynamic>{
       'url': instance.url,
-      'plainUrl': instance.plainUrl,
+      'plain_url': instance.plainUrl,
       'height': instance.height,
       'width': instance.width,
-      'realHeight': instance.realHeight,
-      'realWidth': instance.realWidth,
+      'real_height': instance.realHeight,
+      'real_width': instance.realWidth,
     };

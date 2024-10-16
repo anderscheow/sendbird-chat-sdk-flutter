@@ -8,15 +8,15 @@ part of 'reaction.dart';
 
 Reaction _$ReactionFromJson(Map<String, dynamic> json) => Reaction(
       key: json['key'] as String,
-      userIds: (json['userIds'] as List<dynamic>?)
+      userIds: (json['user_ids'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           [],
-      updatedAt: (json['updatedAt'] as num).toInt(),
+      updatedAt: (json['updated_at'] as num).toInt(),
     );
 
 Map<String, dynamic> _$ReactionToJson(Reaction instance) => <String, dynamic>{
       'key': instance.key,
-      'userIds': instance.userIds,
-      'updatedAt': instance.updatedAt,
+      'user_ids': instance.userIds,
+      'updated_at': instance.updatedAt,
     };

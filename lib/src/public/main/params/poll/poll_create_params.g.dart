@@ -14,9 +14,9 @@ PollCreateParams _$PollCreateParamsFromJson(Map<String, dynamic> json) =>
       data: json['data'] == null
           ? null
           : PollData.fromJson(json['data'] as Map<String, dynamic>),
-      allowUserSuggestion: json['allowUserSuggestion'] as bool?,
-      allowMultipleVotes: json['allowMultipleVotes'] as bool?,
-      closeAt: (json['closeAt'] as num?)?.toInt() ?? -1,
+      allowUserSuggestion: json['allow_user_suggestion'] as bool?,
+      allowMultipleVotes: json['allow_multiple_votes'] as bool?,
+      closeAt: (json['close_at'] as num?)?.toInt() ?? -1,
     );
 
 Map<String, dynamic> _$PollCreateParamsToJson(PollCreateParams instance) =>
@@ -24,7 +24,7 @@ Map<String, dynamic> _$PollCreateParamsToJson(PollCreateParams instance) =>
       'title': instance.title,
       'options': instance.optionTexts,
       'data': instance.data,
-      'allowUserSuggestion': instance.allowUserSuggestion,
-      'allowMultipleVotes': instance.allowMultipleVotes,
-      'closeAt': instance.closeAt,
+      'allow_user_suggestion': instance.allowUserSuggestion,
+      'allow_multiple_votes': instance.allowMultipleVotes,
+      'close_at': instance.closeAt,
     };
