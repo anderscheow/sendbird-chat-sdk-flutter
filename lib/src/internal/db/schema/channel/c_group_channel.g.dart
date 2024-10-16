@@ -13,9 +13,9 @@ extension GetCGroupChannelCollection on Isar {
   IsarCollection<CGroupChannel> get cGroupChannels => this.collection();
 }
 
-final CGroupChannelSchema = CollectionSchema(
+const CGroupChannelSchema = CollectionSchema(
   name: r'CGroupChannel',
-  id: BigInt.parse('-4229950044315142915').toInt(),
+  id: -4229950044315142915,
   properties: {
     r'channelType': PropertySchema(
       id: 0,
@@ -276,7 +276,7 @@ final CGroupChannelSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: true,
       replace: true,
@@ -289,7 +289,7 @@ final CGroupChannelSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -315,7 +315,7 @@ final CGroupChannelSchema = CollectionSchema(
   getId: _cGroupChannelGetId,
   getLinks: _cGroupChannelGetLinks,
   attach: _cGroupChannelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cGroupChannelEstimateSize(

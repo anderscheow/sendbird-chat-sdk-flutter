@@ -13,9 +13,9 @@ extension GetCLoginCollection on Isar {
   IsarCollection<CLogin> get cLogins => this.collection();
 }
 
-final CLoginSchema = CollectionSchema(
+const CLoginSchema = CollectionSchema(
   name: r'CLogin',
-  id: BigInt.parse('-487089198461928861').toInt(),
+  id: -487089198461928861,
   properties: {
     r'appInfo': PropertySchema(
       id: 0,
@@ -63,7 +63,7 @@ final CLoginSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'userId': IndexSchema(
-      id: BigInt.parse('-2005826577402374815').toInt(),
+      id: -2005826577402374815,
       name: r'userId',
       unique: true,
       replace: true,
@@ -85,7 +85,7 @@ final CLoginSchema = CollectionSchema(
   getId: _cLoginGetId,
   getLinks: _cLoginGetLinks,
   attach: _cLoginAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cLoginEstimateSize(
@@ -1200,9 +1200,9 @@ extension CLoginQueryProperty on QueryBuilder<CLogin, CLogin, QQueryProperty> {
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CAppInfoSchema = Schema(
+const CAppInfoSchema = Schema(
   name: r'CAppInfo',
-  id: BigInt.parse('-4428982506234657140').toInt(),
+  id: -4428982506234657140,
   properties: {
     r'allowSdkStatsUpload': PropertySchema(
       id: 0,
@@ -2045,9 +2045,9 @@ extension CAppInfoQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CNotificationInfoSchema = Schema(
+const CNotificationInfoSchema = Schema(
   name: r'CNotificationInfo',
-  id: BigInt.parse('2013809996163728336').toInt(),
+  id: 2013809996163728336,
   properties: {
     r'feedChannels': PropertySchema(
       id: 0,
@@ -2503,9 +2503,9 @@ extension CNotificationInfoQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CReconnectConfigurationSchema = Schema(
+const CReconnectConfigurationSchema = Schema(
   name: r'CReconnectConfiguration',
-  id: BigInt.parse('4193108221451927222').toInt(),
+  id: 4193108221451927222,
   properties: {
     r'interval': PropertySchema(
       id: 0,

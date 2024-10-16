@@ -13,9 +13,9 @@ extension GetCMessageChunkCollection on Isar {
   IsarCollection<CMessageChunk> get cMessageChunks => this.collection();
 }
 
-final CMessageChunkSchema = CollectionSchema(
+const CMessageChunkSchema = CollectionSchema(
   name: r'CMessageChunk',
-  id: BigInt.parse('-912749770485576556').toInt(),
+  id: -912749770485576556,
   properties: {
     r'channelUrl': PropertySchema(
       id: 0,
@@ -36,7 +36,7 @@ final CMessageChunkSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: true,
       replace: true,
@@ -54,7 +54,7 @@ final CMessageChunkSchema = CollectionSchema(
   getId: _cMessageChunkGetId,
   getLinks: _cMessageChunkGetLinks,
   attach: _cMessageChunkAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cMessageChunkEstimateSize(

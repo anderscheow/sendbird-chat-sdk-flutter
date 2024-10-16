@@ -13,9 +13,9 @@ extension GetCFeedChannelCollection on Isar {
   IsarCollection<CFeedChannel> get cFeedChannels => this.collection();
 }
 
-final CFeedChannelSchema = CollectionSchema(
+const CFeedChannelSchema = CollectionSchema(
   name: r'CFeedChannel',
-  id: BigInt.parse('8060769429537757837').toInt(),
+  id: 8060769429537757837,
   properties: {
     r'channelType': PropertySchema(
       id: 0,
@@ -107,7 +107,7 @@ final CFeedChannelSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: true,
       replace: true,
@@ -120,7 +120,7 @@ final CFeedChannelSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -143,7 +143,7 @@ final CFeedChannelSchema = CollectionSchema(
   getId: _cFeedChannelGetId,
   getLinks: _cFeedChannelGetLinks,
   attach: _cFeedChannelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cFeedChannelEstimateSize(
@@ -2707,9 +2707,9 @@ extension CFeedChannelQueryProperty
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CNotificationCategorySchema = Schema(
+const CNotificationCategorySchema = Schema(
   name: r'CNotificationCategory',
-  id: BigInt.parse('-4785915202986038644').toInt(),
+  id: -4785915202986038644,
   properties: {
     r'customType': PropertySchema(
       id: 0,

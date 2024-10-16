@@ -14,9 +14,9 @@ extension GetCMessageChangeLogInfoCollection on Isar {
       this.collection();
 }
 
-final CMessageChangeLogInfoSchema = CollectionSchema(
+const CMessageChangeLogInfoSchema = CollectionSchema(
   name: r'CMessageChangeLogInfo',
-  id: BigInt.parse('-8707217854990464807').toInt(),
+  id: -8707217854990464807,
   properties: {
     r'channelUrl': PropertySchema(
       id: 0,
@@ -41,7 +41,7 @@ final CMessageChangeLogInfoSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: true,
       replace: true,
@@ -59,7 +59,7 @@ final CMessageChangeLogInfoSchema = CollectionSchema(
   getId: _cMessageChangeLogInfoGetId,
   getLinks: _cMessageChangeLogInfoGetLinks,
   attach: _cMessageChangeLogInfoAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cMessageChangeLogInfoEstimateSize(

@@ -14,9 +14,9 @@ extension GetCNotificationMessageCollection on Isar {
       this.collection();
 }
 
-final CNotificationMessageSchema = CollectionSchema(
+const CNotificationMessageSchema = CollectionSchema(
   name: r'CNotificationMessage',
-  id: BigInt.parse('916250674792986472').toInt(),
+  id: 916250674792986472,
   properties: {
     r'allMetaArrays': PropertySchema(
       id: 0,
@@ -112,7 +112,7 @@ final CNotificationMessageSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'rootId': IndexSchema(
-      id: BigInt.parse('5087693435549841488').toInt(),
+      id: 5087693435549841488,
       name: r'rootId',
       unique: true,
       replace: true,
@@ -125,7 +125,7 @@ final CNotificationMessageSchema = CollectionSchema(
       ],
     ),
     r'messageType_rootId': IndexSchema(
-      id: BigInt.parse('-7060804333380842370').toInt(),
+      id: -7060804333380842370,
       name: r'messageType_rootId',
       unique: false,
       replace: false,
@@ -143,7 +143,7 @@ final CNotificationMessageSchema = CollectionSchema(
       ],
     ),
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: false,
       replace: false,
@@ -156,7 +156,7 @@ final CNotificationMessageSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -182,7 +182,7 @@ final CNotificationMessageSchema = CollectionSchema(
   getId: _cNotificationMessageGetId,
   getLinks: _cNotificationMessageGetLinks,
   attach: _cNotificationMessageAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cNotificationMessageEstimateSize(
@@ -3393,9 +3393,9 @@ extension CNotificationMessageQueryProperty on QueryBuilder<
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CNotificationDataSchema = Schema(
+const CNotificationDataSchema = Schema(
   name: r'CNotificationData',
-  id: BigInt.parse('6301434927396286571').toInt(),
+  id: 6301434927396286571,
   properties: {
     r'label': PropertySchema(
       id: 0,

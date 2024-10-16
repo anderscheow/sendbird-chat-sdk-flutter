@@ -13,9 +13,9 @@ extension GetCChannelChunkCollection on Isar {
   IsarCollection<CChannelChunk> get cChannelChunks => this.collection();
 }
 
-final CChannelChunkSchema = CollectionSchema(
+const CChannelChunkSchema = CollectionSchema(
   name: r'CChannelChunk',
-  id: BigInt.parse('-5197328800100259982').toInt(),
+  id: -5197328800100259982,
   properties: {
     r'channelChunkType': PropertySchema(
       id: 0,
@@ -37,7 +37,7 @@ final CChannelChunkSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'channelChunkType': IndexSchema(
-      id: BigInt.parse('4843714266287096217').toInt(),
+      id: 4843714266287096217,
       name: r'channelChunkType',
       unique: true,
       replace: true,
@@ -55,7 +55,7 @@ final CChannelChunkSchema = CollectionSchema(
   getId: _cChannelChunkGetId,
   getLinks: _cChannelChunkGetLinks,
   attach: _cChannelChunkAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cChannelChunkEstimateSize(

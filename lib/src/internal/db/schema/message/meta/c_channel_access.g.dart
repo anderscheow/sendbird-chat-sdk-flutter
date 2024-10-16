@@ -13,9 +13,9 @@ extension GetCChannelAccessCollection on Isar {
   IsarCollection<CChannelAccess> get cChannelAccess => this.collection();
 }
 
-final CChannelAccessSchema = CollectionSchema(
+const CChannelAccessSchema = CollectionSchema(
   name: r'CChannelAccess',
-  id: BigInt.parse('-6628375663287460931').toInt(),
+  id: -6628375663287460931,
   properties: {
     r'channelUrl': PropertySchema(
       id: 0,
@@ -35,7 +35,7 @@ final CChannelAccessSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: true,
       replace: true,
@@ -48,7 +48,7 @@ final CChannelAccessSchema = CollectionSchema(
       ],
     ),
     r'lastAccessedAt': IndexSchema(
-      id: BigInt.parse('7637973981624628205').toInt(),
+      id: 7637973981624628205,
       name: r'lastAccessedAt',
       unique: false,
       replace: false,
@@ -66,7 +66,7 @@ final CChannelAccessSchema = CollectionSchema(
   getId: _cChannelAccessGetId,
   getLinks: _cChannelAccessGetLinks,
   attach: _cChannelAccessAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _cChannelAccessEstimateSize(
