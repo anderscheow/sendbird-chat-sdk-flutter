@@ -7,35 +7,36 @@ part of 'admin_message.dart';
 // **************************************************************************
 
 AdminMessage _$AdminMessageFromJson(Map<String, dynamic> json) => AdminMessage(
-      channelUrl: json['channelUrl'] as String,
+      channelUrl: json['channel_url'] as String,
       channelType: $enumDecodeNullable(
-              _$ChannelTypeEnumMap, json['channelType'],
+              _$ChannelTypeEnumMap, json['channel_type'],
               unknownValue: ChannelType.group) ??
           ChannelType.group,
-      messageId: (json['messageId'] as num?)?.toInt() ?? 0,
+      messageId: (json['message_id'] as num?)?.toInt() ?? 0,
       message: json['message'] as String,
       sendingStatus:
-          $enumDecodeNullable(_$SendingStatusEnumMap, json['sendingStatus']),
-      requestId: json['requestId'] as String?,
-      mentionedUsers: (json['mentionedUsers'] as List<dynamic>?)
+          $enumDecodeNullable(_$SendingStatusEnumMap, json['sending_status']),
+      requestId: json['request_id'] as String?,
+      mentionedUsers: (json['mentioned_users'] as List<dynamic>?)
               ?.map((e) => User.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       mentionType: $enumDecodeNullable(
-              _$MentionTypeEnumMap, json['mentionType'],
+              _$MentionTypeEnumMap, json['mention_type'],
               unknownValue: MentionType.users) ??
           MentionType.users,
-      createdAt: (json['createdAt'] as num?)?.toInt() ?? 0,
-      updatedAt: (json['updatedAt'] as num?)?.toInt() ?? 0,
-      parentMessageId: (json['parentMessageId'] as num?)?.toInt(),
+      createdAt: (json['created_at'] as num?)?.toInt() ?? 0,
+      updatedAt: (json['updated_at'] as num?)?.toInt() ?? 0,
+      parentMessageId: (json['parent_message_id'] as num?)?.toInt(),
       parentMessage: json['parent_message_info'] as Map<String, dynamic>?,
-      threadInfo: json['threadInfo'] == null
+      threadInfo: json['thread_info'] == null
           ? null
-          : ThreadInfo.fromJson(json['threadInfo'] as Map<String, dynamic>),
-      customType: json['customType'] as String?,
+          : ThreadInfo.fromJson(json['thread_info'] as Map<String, dynamic>),
+      customType: json['custom_type'] as String?,
       messageSurvivalSeconds:
-          (json['messageSurvivalSeconds'] as num?)?.toInt() ?? -1,
-      forceUpdateLastMessage: json['forceUpdateLastMessage'] as bool? ?? false,
+          (json['message_survival_seconds'] as num?)?.toInt() ?? -1,
+      forceUpdateLastMessage:
+          json['force_update_last_message'] as bool? ?? false,
       isSilent: json['silent'] as bool? ?? false,
       isOperatorMessage: json['is_op_msg'] as bool? ?? false,
       data: TypeChecker.fromJsonToNullableString(json['data']),
@@ -52,38 +53,38 @@ AdminMessage _$AdminMessageFromJson(Map<String, dynamic> json) => AdminMessage(
           ?.map((e) => MessageMetaArray.fromJson(e as Map<String, dynamic>))
           .toList()
       ..isReplyToChannel = json['is_reply_to_channel'] as bool? ?? false
-      ..errorCode = (json['errorCode'] as num?)?.toInt()
+      ..errorCode = (json['error_code'] as num?)?.toInt()
       ..sender = json['user'] == null
           ? null
           : Sender.fromJson(json['user'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$AdminMessageToJson(AdminMessage instance) =>
     <String, dynamic>{
-      'channelUrl': instance.channelUrl,
-      'channelType': _$ChannelTypeEnumMap[instance.channelType]!,
+      'channel_url': instance.channelUrl,
+      'channel_type': _$ChannelTypeEnumMap[instance.channelType]!,
       'data': instance.data,
-      'customType': instance.customType,
-      'mentionType': _$MentionTypeEnumMap[instance.mentionType]!,
-      'mentionedUsers': instance.mentionedUsers,
+      'custom_type': instance.customType,
+      'mention_type': _$MentionTypeEnumMap[instance.mentionType]!,
+      'mentioned_users': instance.mentionedUsers,
       'sorted_metaarray': instance.allMetaArrays,
       'extended_message': instance.extendedMessage,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'messageId': instance.messageId,
-      'requestId': instance.requestId,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'message_id': instance.messageId,
+      'request_id': instance.requestId,
       'message': instance.message,
-      'sendingStatus': _$SendingStatusEnumMap[instance.sendingStatus],
+      'sending_status': _$SendingStatusEnumMap[instance.sendingStatus],
       'is_reply_to_channel': instance.isReplyToChannel,
-      'parentMessageId': instance.parentMessageId,
+      'parent_message_id': instance.parentMessageId,
       'parent_message_info': instance.parentMessage,
-      'threadInfo': instance.threadInfo,
-      'messageSurvivalSeconds': instance.messageSurvivalSeconds,
+      'thread_info': instance.threadInfo,
+      'message_survival_seconds': instance.messageSurvivalSeconds,
       'silent': instance.isSilent,
-      'errorCode': instance.errorCode,
+      'error_code': instance.errorCode,
       'is_op_msg': instance.isOperatorMessage,
       'og_tag': instance.ogMetaData,
       'reactions': instance.reactions,
-      'forceUpdateLastMessage': instance.forceUpdateLastMessage,
+      'force_update_last_message': instance.forceUpdateLastMessage,
       'user': instance.sender,
     };
 

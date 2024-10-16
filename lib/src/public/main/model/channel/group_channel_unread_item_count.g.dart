@@ -10,21 +10,23 @@ GroupChannelUnreadItemCount _$GroupChannelUnreadItemCountFromJson(
         Map<String, dynamic> json) =>
     GroupChannelUnreadItemCount(
       groupChannelInvitationCount:
-          (json['groupChannelInvitationCount'] as num?)?.toInt(),
+          (json['group_channel_invitation_count'] as num?)?.toInt(),
       groupChannelUnreadMentionCount:
-          (json['groupChannelUnreadMentionCount'] as num?)?.toInt(),
+          (json['group_channel_unread_mention_count'] as num?)?.toInt(),
       groupChannelUnreadMessageCount:
-          (json['groupChannelUnreadMessageCount'] as num?)?.toInt(),
+          (json['group_channel_unread_message_count'] as num?)?.toInt(),
       superGroupChannelInvitationCount:
-          (json['superGroupChannelInvitationCount'] as num?)?.toInt(),
+          (json['super_group_channel_invitation_count'] as num?)?.toInt(),
       superGroupChannelUnreadMentionCount:
-          (json['superGroupChannelUnreadMentionCount'] as num?)?.toInt(),
+          (json['super_group_channel_unread_mention_count'] as num?)?.toInt(),
       superGroupChannelUnreadMessageCount:
-          (json['superGroupChannelUnreadMessageCount'] as num?)?.toInt(),
+          (json['super_group_channel_unread_message_count'] as num?)?.toInt(),
       nonSuperGroupChannelInvitationCount:
-          (json['nonSuperGroupChannelInvitationCount'] as num?)?.toInt(),
+          (json['non_super_group_channel_invitation_count'] as num?)?.toInt(),
       nonSuperGroupChannelUnreadMentionCount:
-          (json['nonSuperGroupChannelUnreadMentionCount'] as num?)?.toInt(),
+          (json['non_super_group_channel_unread_mention_count'] as num?)
+              ?.toInt(),
       nonSuperGroupChannelUnreadMessageCount:
-          (json['nonSuperGroupChannelUnreadMessageCount'] as num?)?.toInt(),
+          (json['non_super_group_channel_unread_message_count'] as num?)
+              ?.toInt(),
     );

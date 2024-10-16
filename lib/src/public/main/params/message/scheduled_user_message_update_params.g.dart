@@ -10,33 +10,34 @@ ScheduledUserMessageUpdateParams _$ScheduledUserMessageUpdateParamsFromJson(
         Map<String, dynamic> json) =>
     ScheduledUserMessageUpdateParams(
       message: json['message'] as String?,
-      scheduledAt: (json['scheduledAt'] as num?)?.toInt(),
-      customType: json['customType'] as String?,
+      scheduledAt: (json['scheduled_at'] as num?)?.toInt(),
+      customType: json['custom_type'] as String?,
       data: json['data'] as String?,
       mentionType:
-          $enumDecodeNullable(_$MentionTypeEnumMap, json['mentionType']),
-      mentionedUserIds: (json['mentionedUserIds'] as List<dynamic>?)
+          $enumDecodeNullable(_$MentionTypeEnumMap, json['mention_type']),
+      mentionedUserIds: (json['mentioned_user_ids'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      appleCriticalAlertOptions: json['appleCriticalAlertOptions'] == null
+      appleCriticalAlertOptions: json['apple_critical_alert_options'] == null
           ? null
           : AppleCriticalAlertOptions.fromJson(
-              json['appleCriticalAlertOptions'] as Map<String, dynamic>),
+              json['apple_critical_alert_options'] as Map<String, dynamic>),
       pushNotificationDeliveryOption: $enumDecodeNullable(
-          _$PushTriggerOptionEnumMap, json['pushNotificationDeliveryOption']),
+          _$PushTriggerOptionEnumMap,
+          json['push_notification_delivery_option']),
     );
 
 Map<String, dynamic> _$ScheduledUserMessageUpdateParamsToJson(
         ScheduledUserMessageUpdateParams instance) =>
     <String, dynamic>{
       'message': instance.message,
-      'scheduledAt': instance.scheduledAt,
-      'customType': instance.customType,
+      'scheduled_at': instance.scheduledAt,
+      'custom_type': instance.customType,
       'data': instance.data,
-      'mentionType': _$MentionTypeEnumMap[instance.mentionType],
-      'mentionedUserIds': instance.mentionedUserIds,
-      'appleCriticalAlertOptions': instance.appleCriticalAlertOptions,
-      'pushNotificationDeliveryOption':
+      'mention_type': _$MentionTypeEnumMap[instance.mentionType],
+      'mentioned_user_ids': instance.mentionedUserIds,
+      'apple_critical_alert_options': instance.appleCriticalAlertOptions,
+      'push_notification_delivery_option':
           _$PushTriggerOptionEnumMap[instance.pushNotificationDeliveryOption],
     };
 

@@ -8,9 +8,9 @@ part of 'notification_message.dart';
 
 NotificationMessage _$NotificationMessageFromJson(Map<String, dynamic> json) =>
     NotificationMessage(
-      channelUrl: json['channelUrl'] as String,
+      channelUrl: json['channel_url'] as String,
       channelType: $enumDecodeNullable(
-              _$ChannelTypeEnumMap, json['channelType'],
+              _$ChannelTypeEnumMap, json['channel_type'],
               unknownValue: ChannelType.group) ??
           ChannelType.group,
       notificationId: json['notification_message_id'] as String,
@@ -19,12 +19,12 @@ NotificationMessage _$NotificationMessageFromJson(Map<String, dynamic> json) =>
           : NotificationMessage._messageStatusValueOf(
               json['message_status'] as String),
       data: TypeChecker.fromJsonToNullableString(json['data']),
-      customType: json['customType'] as String?,
+      customType: json['custom_type'] as String?,
       mentionType: $enumDecodeNullable(
-              _$MentionTypeEnumMap, json['mentionType'],
+              _$MentionTypeEnumMap, json['mention_type'],
               unknownValue: MentionType.users) ??
           MentionType.users,
-      mentionedUsers: (json['mentionedUsers'] as List<dynamic>?)
+      mentionedUsers: (json['mentioned_users'] as List<dynamic>?)
               ?.map((e) => User.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <User>[],
@@ -32,23 +32,23 @@ NotificationMessage _$NotificationMessageFromJson(Map<String, dynamic> json) =>
           ?.map((e) => MessageMetaArray.fromJson(e as Map<String, dynamic>))
           .toList(),
       extendedMessage: json['extended_message'] as Map<String, dynamic>? ?? {},
-      createdAt: (json['createdAt'] as num?)?.toInt() ?? 0,
-      updatedAt: (json['updatedAt'] as num?)?.toInt() ?? 0,
+      createdAt: (json['created_at'] as num?)?.toInt() ?? 0,
+      updatedAt: (json['updated_at'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$NotificationMessageToJson(
         NotificationMessage instance) =>
     <String, dynamic>{
-      'channelUrl': instance.channelUrl,
-      'channelType': _$ChannelTypeEnumMap[instance.channelType]!,
+      'channel_url': instance.channelUrl,
+      'channel_type': _$ChannelTypeEnumMap[instance.channelType]!,
       'data': instance.data,
-      'customType': instance.customType,
-      'mentionType': _$MentionTypeEnumMap[instance.mentionType]!,
-      'mentionedUsers': instance.mentionedUsers,
+      'custom_type': instance.customType,
+      'mention_type': _$MentionTypeEnumMap[instance.mentionType]!,
+      'mentioned_users': instance.mentionedUsers,
       'sorted_metaarray': instance.allMetaArrays,
       'extended_message': instance.extendedMessage,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'notification_message_id': instance.notificationId,
       'message_status':
           _$NotificationMessageStatusEnumMap[instance.messageStatus]!,
