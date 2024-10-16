@@ -1,3 +1,8 @@
+## v4.3.0 (Oct 16, 2024)
+
+### Improvements
+- Migrate `isar` from `pub.dev` to `pub.isar-community.dev`
+
 ## v4.2.24 (Oct 8, 2024)
 
 ### Improvements
