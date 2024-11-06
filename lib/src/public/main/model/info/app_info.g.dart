@@ -24,4 +24,8 @@ AppInfo _$AppInfoFromJson(Map<String, dynamic> json) => AppInfo(
               json['notifications'] as Map<String, dynamic>),
       allowSdkStatsUpload: json['allow_sdk_log_ingestion'] as bool? ?? true,
       disableSuperGroupMack: json['disable_supergroup_mack'] as bool? ?? false,
+      unreadCntThreadingPolicy:
+          (json['unread_cnt_threading_policy'] as num?)?.toInt() ?? 0,
+      lastMsgThreadingPolicy:
+          (json['last_msg_threading_policy'] as num?)?.toInt() ?? 0,
     );

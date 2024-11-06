@@ -83,11 +83,11 @@ class ConnectionManager {
     );
   }
 
-  Future<void> disconnect({required logout}) async {
+  Future<void> disconnect({required bool logout}) async {
     await _currentState.disconnect(logout: logout);
   }
 
-  Future<bool> reconnect({bool reset = false}) async {
+  Future<bool> reconnect({required bool reset}) async {
     return await _currentState.reconnect(reset: reset);
   }
 
@@ -242,6 +242,7 @@ class ConnectionManager {
   Future<void> doDisconnect({
     required bool clear,
     bool logout = false,
+    bool fromEnterBackground = false,
   }) async {
     sbLog.i(
       StackTrace.current,
@@ -257,18 +258,13 @@ class ConnectionManager {
     if (isReconnecting()) {
       reconnectTimer?.cancel();
       reconnectTimer = null;
-      if (clear) {
-        chat.eventManager.notifyReconnectFailed();
-      }
     }
 
-    await webSocketClient.close();
+    final isClosedSuccessfully = await webSocketClient.close();
 
     final disconnectedUserId = chat.chatContext.currentUserId ?? '';
 
     if (clear || logout) {
-      await chat.eventDispatcher.onLogout();
-
       chat.messageQueueMap.forEach((key, q) => q.cleanUp());
       chat.messageQueueMap.clear();
       // chat.uploads.forEach((key, value) => _api.cancelUploadingFile(key));
@@ -280,6 +276,8 @@ class ConnectionManager {
       chat.apiClient.cleanUp();
 
       if (logout) {
+        await chat.eventDispatcher.onLogout();
+
         chat.chatContext.cleanUp();
         chat.collectionManager.cleanUpGroupChannelCollections();
         chat.collectionManager.cleanUpMessageCollections();
@@ -294,20 +292,31 @@ class ConnectionManager {
       await chat.eventDispatcher.onDisconnected();
     }
 
-    changeState(DisconnectedState(chat: chat));
+    if (fromEnterBackground && !chat.isBackground && !isClosedSuccessfully) {
+      chat.connectionManager.reconnect(reset: true); // Check
+    } else {
+      if (isReconnecting()) {
+        chat.eventManager.notifyReconnectFailed();
+      }
+      changeState(DisconnectedState(chat: chat));
 
-    if (clear && disconnectedUserId.isNotEmpty) {
-      chat.eventManager.notifyDisconnected(disconnectedUserId);
+      if (clear && disconnectedUserId.isNotEmpty) {
+        chat.eventManager.notifyDisconnected(disconnectedUserId);
+      }
     }
   }
 
   Future<bool> doReconnect({bool reset = false}) async {
     sbLog.i(StackTrace.current, 'reset: $reset');
 
+    bool doNotCallReconnectStartedEvent = false;
+    if (isReconnecting() && reset) {
+      doNotCallReconnectStartedEvent = true;
+    }
+
     if (chat.chatContext.currentUser == null ||
         chat.chatContext.sessionKey == null) {
       changeState(DisconnectedState(chat: chat));
-      chat.eventManager.notifyReconnectFailed();
       return false;
     }
 
@@ -341,8 +350,10 @@ class ConnectionManager {
       );
 
       if (chat.chatContext.reconnectTask?.retryCount == 1) {
-        await chat.eventDispatcher.onReconnecting();
-        chat.eventManager.notifyReconnectStarted();
+        if (!doNotCallReconnectStartedEvent) {
+          await chat.eventDispatcher.onReconnecting();
+          chat.eventManager.notifyReconnectStarted();
+        }
       }
 
       // ===== Reconnect =====
