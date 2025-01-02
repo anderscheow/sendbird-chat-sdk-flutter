@@ -37,3 +37,6 @@ build/
 doc/
 coverage/
 *.info
+
+# FVM Version Cache
+.fvm/
