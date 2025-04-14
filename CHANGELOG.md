@@ -1,3 +1,12 @@
+## v4.6.0 (Apr 14, 2025)
+
+### Improvements
+
+- Fork from Origin v4.2.30
+- Fork from Origin v4.2.31
+- Fork from Origin v4.3.0
+- Fork from Origin v4.3.1
+
 ## v4.5.0 (Jan 2, 2025)
 
 ### Improvements
