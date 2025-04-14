@@ -257,6 +257,12 @@ class Chat with WidgetsBindingObserver {
         } else if (results.contains(ConnectivityResult.none)) {
           channelCache.markAsDirtyAll(); // Check
 
+          statManager.appendWsDisconnectStat(
+            success: true,
+            errorCode: SendbirdError.networkError,
+            errorDescription: "cause=network_closed",
+          );
+
           sbLog.d(StackTrace.current, 'disconnect()');
           await connectionManager.disconnect(logout: false);
         }
