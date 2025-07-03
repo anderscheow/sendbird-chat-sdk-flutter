@@ -28,6 +28,7 @@ Find out more about Sendbird Chat for Flutter on [the documentation](https://st.
 ## Requirements
 
 The minimum requirements for the Chat SDK for Flutter are:
+
 - Dart 2.19.0 or later
 - Flutter 3.7.0 or later
 
@@ -46,11 +47,12 @@ Before installing Sendbird Chat SDK, you need to create a Sendbird application o
 > **Note**: Each Sendbird application can be integrated with a single client app. Within the same application, users can communicate with each other across all platforms, whether they are on mobile devices or on the web.
 
 ### Step 2: Install packages
+
 - Add following dependency in `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  sendbird_chat_sdk: ^4.6.0
+  sendbird_chat_sdk: ^4.7.0
 ```
 
 - Run `flutter pub get` command in your project directory.
