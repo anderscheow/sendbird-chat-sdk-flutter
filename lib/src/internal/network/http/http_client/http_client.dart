@@ -25,6 +25,7 @@ enum HttpMethod {
 }
 
 class HttpClient {
+  final apiTimeoutSec = 10; // Check
   final Map<String, MultipartRequest> uploadingMultipartRequests = {};
   StreamController? errorStreamController =
       StreamController<SendbirdException>.broadcast(sync: true);
@@ -32,6 +33,8 @@ class HttpClient {
   final ChatContext _chatContext;
   final SessionManager _sessionManager;
   final StatManager? _statManager;
+
+  final _client = http.Client(); // Check if it should be closed
 
   HttpClient({
     required ChatContext chatContext,
@@ -61,6 +64,20 @@ class HttpClient {
     );
   }
 
+  Future<http.StreamedResponse> _sendWithTimeout(
+    http.BaseRequest request,
+  ) async {
+    try {
+      http.StreamedResponse response =
+          await _client.send(request).timeout(Duration(seconds: apiTimeoutSec));
+      return response;
+    } on TimeoutException {
+      sbLog.e(StackTrace.current,
+          '[TimeoutException] apiTimeoutSec: $apiTimeoutSec');
+      rethrow;
+    }
+  }
+
   Future<dynamic> get({
     required Uri uri,
     Map<String, dynamic>? queryParams,
@@ -77,11 +94,13 @@ class HttpClient {
     sbLog.d(StackTrace.current,
         '\n-[url] $uri\n-[headers] ${jsonEncoder.convert(request.headers)}\n-[queryParams] ${jsonEncoder.convert(queryParams)}');
 
-    http.Response res = await http.Response.fromStream(await request.send());
+    http.Response res =
+        await http.Response.fromStream(await _sendWithTimeout(request));
     if (await _checkSessionKeyExpired(res)) {
       final secondRequest = _copyRequest(request);
       if (secondRequest != null) {
-        res = await http.Response.fromStream(await secondRequest.send());
+        res = await http.Response.fromStream(
+            await _sendWithTimeout(secondRequest));
       }
     }
     return _response(res);
@@ -108,11 +127,13 @@ class HttpClient {
     sbLog.d(StackTrace.current,
         '\n-[url] $uri\n-[headers] ${jsonEncoder.convert(request.headers)}\n-[queryParams] ${jsonEncoder.convert(queryParams)}\n-[body] ${jsonEncoder.convert(body)}');
 
-    http.Response res = await http.Response.fromStream(await request.send());
+    http.Response res =
+        await http.Response.fromStream(await _sendWithTimeout(request));
     if (await _checkSessionKeyExpired(res)) {
       final secondRequest = _copyRequest(request);
       if (secondRequest != null) {
-        res = await http.Response.fromStream(await secondRequest.send());
+        res = await http.Response.fromStream(
+            await _sendWithTimeout(secondRequest));
       }
     }
     return _response(res);
@@ -136,11 +157,13 @@ class HttpClient {
     sbLog.d(StackTrace.current,
         '\n-[url] $uri\n-[headers] ${jsonEncoder.convert(request.headers)}\n-[queryParams] ${jsonEncoder.convert(queryParams)}\n-[body] ${jsonEncoder.convert(body)}');
 
-    http.Response res = await http.Response.fromStream(await request.send());
+    http.Response res =
+        await http.Response.fromStream(await _sendWithTimeout(request));
     if (await _checkSessionKeyExpired(res)) {
       final secondRequest = _copyRequest(request);
       if (secondRequest != null) {
-        res = await http.Response.fromStream(await secondRequest.send());
+        res = await http.Response.fromStream(
+            await _sendWithTimeout(secondRequest));
       }
     }
     return _response(res);
@@ -164,11 +187,13 @@ class HttpClient {
     sbLog.d(StackTrace.current,
         '\n-[url] $uri\n-[headers] ${jsonEncoder.convert(request.headers)}\n-[queryParams] ${jsonEncoder.convert(queryParams)}\n-[body] ${jsonEncoder.convert(body)}');
 
-    http.Response res = await http.Response.fromStream(await request.send());
+    http.Response res =
+        await http.Response.fromStream(await _sendWithTimeout(request));
     if (await _checkSessionKeyExpired(res)) {
       final secondRequest = _copyRequest(request);
       if (secondRequest != null) {
-        res = await http.Response.fromStream(await secondRequest.send());
+        res = await http.Response.fromStream(
+            await _sendWithTimeout(secondRequest));
       }
     }
     return _response(res);
