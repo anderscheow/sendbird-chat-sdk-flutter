@@ -1,3 +1,10 @@
+## v4.8.0 (Aug 25, 2025)
+
+### Improvements
+
+- Fork from Origin v4.5.0
+- Fork from Origin v4.5.1
+
 ## v4.7.0 (Jul 3, 2025)
 
 ### Improvements
