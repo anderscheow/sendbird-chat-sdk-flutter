@@ -1,3 +1,9 @@
+## v4.9.0 (Sept 7, 2025)
+
+### Improvements
+
+- Upgrade isar and other dependencies
+
 ## v4.8.0 (Aug 25, 2025)
 
 ### Improvements
