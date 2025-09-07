@@ -320,7 +320,7 @@ const CGroupChannelSchema = CollectionSchema(
   getId: _cGroupChannelGetId,
   getLinks: _cGroupChannelGetLinks,
   attach: _cGroupChannelAttach,
-  version: '3.1.8',
+  version: '3.3.0-dev.1',
 );
 
 int _cGroupChannelEstimateSize(

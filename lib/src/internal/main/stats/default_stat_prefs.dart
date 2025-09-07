@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/logger/sendbird_logger.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/stats/model/default/api_result_stat.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/stats/model/default/default_stat.dart';
@@ -32,8 +31,7 @@ class DefaultStatPrefs {
   Future<List<DefaultStat>> get stats async {
     final List<String>? stats = (await _prefs).getStringList(prefDefaultStats);
     final List<DefaultStat> defaultStats =
-        stats?.map((json) => _getDefaultStat(json)).whereNotNull().toList() ??
-            [];
+        stats?.map((json) => _getDefaultStat(json)).nonNulls.toList() ?? [];
     return defaultStats;
   }
 
@@ -104,7 +102,7 @@ class DefaultStatPrefs {
 
     final prefs = (await _prefs);
     final List<String> statsString =
-        stats.map((stat) => jsonEncode(stat)).whereNotNull().toList();
+        stats.map((stat) => jsonEncode(stat)).nonNulls.toList();
     await prefs.setStringList(prefDefaultStats, statsString);
     await prefs.setInt(prefDefaultStatsCount, stats.length);
   }

@@ -113,7 +113,7 @@ Map<String, dynamic> _$GroupChannelToJson(GroupChannel instance) =>
       'ts_message_offset': instance.messageOffsetTimestamp,
       'message_survival_seconds': instance.messageSurvivalSeconds,
       'pinned_message_ids': instance.pinnedMessageIds,
-      'latest_pinned_message': instance.lastPinnedMessage?.toJson(),
+      'latest_pinned_message': instance.lastPinnedMessage,
       'message_purge_offset': instance.messageDeletionTimestamp,
     };
 

@@ -53,7 +53,6 @@ import 'package:sendbird_chat_sdk/src/internal/network/http/http_client/request/
 import 'package:sendbird_chat_sdk/src/internal/network/http/http_client/request/user/preference/user_snooze_request.dart';
 import 'package:sendbird_chat_sdk/src/internal/network/http/http_client/request/user/push/user_push_register_request.dart';
 import 'package:sendbird_chat_sdk/src/internal/network/http/http_client/request/user/push/user_push_unregister_request.dart';
-import 'package:sendbird_chat_sdk/src/public/main/params/channel/feed_channel_total_unread_message_count_params.dart';
 import 'package:universal_io/io.dart';
 
 part 'chat_auth.dart';

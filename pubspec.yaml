@@ -6,7 +6,7 @@ repository: https://github.com/sendbird/sendbird-chat-sdk-flutter
 documentation: https://sendbird.com/docs/chat/sdk/v4/flutter/getting-started/send-first-message
 
 environment:
-  sdk: ">=2.19.0 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
   flutter: ">=3.7.0"
 
 platforms:
@@ -32,12 +32,8 @@ dependencies:
   async: ^2.11.0
   path_provider: ^2.1.5
   path: ^1.9.0
-  isar:
-    hosted: https://pub.isar-community.dev
-    version: ^3.1.8
-  isar_flutter_libs:
-    hosted: https://pub.isar-community.dev
-    version: ^3.1.8
+  isar_community: ^3.3.0-dev.1
+  isar_community_flutter_libs: ^3.3.0-dev.1
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +43,4 @@ dev_dependencies:
   stack_trace: ^1.11.1
   json_serializable: ^6.9.0
   build_runner: ^2.4.13
-  isar_generator:
-    hosted: https://pub.isar-community.dev
-    version: ^3.1.8
+  isar_community_generator: ^3.3.0-dev.1

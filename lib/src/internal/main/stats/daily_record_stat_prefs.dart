@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/logger/sendbird_logger.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/stats/model/daily_record/daily_record_stat.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/stats/model/daily_record/local_cache_stat.dart';
@@ -35,7 +34,7 @@ class DailyRecordStatPrefs {
             return null;
           }
         })
-        .whereNotNull()
+        .nonNulls
         .toList();
 
     return dailyRecordStats;
@@ -59,7 +58,7 @@ class DailyRecordStatPrefs {
           }
           return null;
         })
-        .whereNotNull()
+        .nonNulls
         .toList();
 
     return dailyRecordStats;

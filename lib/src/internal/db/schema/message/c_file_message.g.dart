@@ -302,7 +302,7 @@ const CFileMessageSchema = CollectionSchema(
   getId: _cFileMessageGetId,
   getLinks: _cFileMessageGetLinks,
   attach: _cFileMessageAttach,
-  version: '3.1.8',
+  version: '3.3.0-dev.1',
 );
 
 int _cFileMessageEstimateSize(

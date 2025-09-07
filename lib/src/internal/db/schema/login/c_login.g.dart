@@ -85,7 +85,7 @@ const CLoginSchema = CollectionSchema(
   getId: _cLoginGetId,
   getLinks: _cLoginGetLinks,
   attach: _cLoginAttach,
-  version: '3.1.8',
+  version: '3.3.0-dev.1',
 );
 
 int _cLoginEstimateSize(

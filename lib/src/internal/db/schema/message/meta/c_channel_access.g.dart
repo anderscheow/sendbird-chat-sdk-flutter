@@ -66,7 +66,7 @@ const CChannelAccessSchema = CollectionSchema(
   getId: _cChannelAccessGetId,
   getLinks: _cChannelAccessGetLinks,
   attach: _cChannelAccessAttach,
-  version: '3.1.8',
+  version: '3.3.0-dev.1',
 );
 
 int _cChannelAccessEstimateSize(

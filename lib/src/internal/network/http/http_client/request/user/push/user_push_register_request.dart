@@ -50,8 +50,6 @@ class UserPushTokenRegisterRequest extends ApiRequest {
         return 'apns';
       case PushTokenType.hms:
         return 'huawei';
-      default:
-        return null;
     }
   }
 }
