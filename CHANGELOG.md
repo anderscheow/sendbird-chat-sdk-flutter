@@ -1,8 +1,15 @@
+## v4.9.1 (Sept 9, 2025)
+
+### Improvements
+
+- Upgrade `isar_community` to `3.3.0-dev.2`
+
 ## v4.9.0 (Sept 7, 2025)
 
 ### Improvements
 
-- Upgrade isar and other dependencies
+- Change `isar` to `isar_community`
+- Upgrade other dependencies
 
 ## v4.8.0 (Aug 25, 2025)
 
