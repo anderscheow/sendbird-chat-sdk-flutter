@@ -261,7 +261,7 @@ const CAdminMessageSchema = CollectionSchema(
   getId: _cAdminMessageGetId,
   getLinks: _cAdminMessageGetLinks,
   attach: _cAdminMessageAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.0-dev.2',
 );
 
 int _cAdminMessageEstimateSize(

@@ -32,8 +32,8 @@ dependencies:
   async: ^2.11.0
   path_provider: ^2.1.5
   path: ^1.9.0
-  isar_community: ^3.3.0-dev.1
-  isar_community_flutter_libs: ^3.3.0-dev.1
+  isar_community: ^3.3.0-dev.2
+  isar_community_flutter_libs: ^3.3.0-dev.2
 
 dev_dependencies:
   flutter_test:
@@ -43,4 +43,4 @@ dev_dependencies:
   stack_trace: ^1.11.1
   json_serializable: ^6.9.0
   build_runner: ^2.4.13
-  isar_community_generator: ^3.3.0-dev.1
+  isar_community_generator: ^3.3.0-dev.2
