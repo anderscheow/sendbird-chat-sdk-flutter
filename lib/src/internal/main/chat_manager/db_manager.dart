@@ -47,6 +47,12 @@ class DBManager {
   late final Isar _isar;
   bool _isInitialized = false;
 
+  // Number of Isar write transactions issued via [write]. Exposed so tests can
+  // guard the CLNP-8914 batching: a channel (with its members/messages) and a
+  // whole upserted page must each persist in exactly ONE transaction, and a
+  // cache read must issue none.
+  int writeTxnCount = 0;
+
   final Chat _chat;
   late final DB _db;
   late final Directory _dbDir;
@@ -152,6 +158,7 @@ class DBManager {
 
   Future<void> write(Function writeFunc, {bool force = false}) async {
     if (isEnabled() || (_isInitialized && force)) {
+      writeTxnCount++;
       try {
         await _db.write(writeFunc);
       } catch (e) {
@@ -316,9 +323,8 @@ class DBManager {
 
   Future<void> upsertGroupChannels(List<GroupChannel> channels) async {
     if (isEnabled()) {
-      for (final channel in channels) {
-        await _db.upsertGroupChannel(channel);
-      }
+      // Persist the whole batch in a single write transaction. (CLNP-8914)
+      await _db.upsertGroupChannels(channels);
     }
   }
 
@@ -332,11 +338,27 @@ class DBManager {
     return [];
   }
 
+  // Existence-only look-ahead for hasMore — avoids deserializing a full page.
+  // (CLNP-8914)
+  Future<bool> hasMoreGroupChannels({
+    required GroupChannelListQuery query,
+    int? offset,
+  }) async {
+    if (isEnabled()) {
+      return await _db.hasMoreGroupChannels(query, offset);
+    }
+    return false;
+  }
+
+  @Deprecated(
+      'Internal API that is no longer used by the SDK; the collection now '
+      'filters in memory.')
   Future<bool> canAddChannel({
     required GroupChannelListQuery query,
     required String channelUrl,
   }) async {
     if (isEnabled()) {
+      // ignore: deprecated_member_use_from_same_package
       return await _db.canAddChannel(query, channelUrl);
     }
     return true;

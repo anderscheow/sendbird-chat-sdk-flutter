@@ -195,7 +195,11 @@ extension GroupChannelCollectionManager on CollectionManager {
           for (final channel in unavailableChannels) {
             addedChannels.remove(channel);
           }
-          await _chat.dbManager.upsertGroupChannels(addedChannels);
+          // channelCacheLoadMore channels were just read FROM the local cache —
+          // writing them straight back is redundant. (CLNP-8914)
+          if (eventSource != CollectionEventSource.channelCacheLoadMore) {
+            await _chat.dbManager.upsertGroupChannels(addedChannels);
+          }
         }
       }
       if (updatedChannels != null) {

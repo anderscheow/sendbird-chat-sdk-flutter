@@ -266,6 +266,18 @@ class DB {
     await CGroupChannel.upsert(_chat, _isar, channel);
   }
 
+  // Batch-upsert a list of channels in a SINGLE write transaction — one durable
+  // commit for the whole page instead of one per channel (and one per member).
+  // This is the back-sync / loadMore hot path. (CLNP-8914)
+  Future<void> upsertGroupChannels(List<GroupChannel> channels) async {
+    if (channels.isEmpty) return;
+    await _chat.dbManager.write(() async {
+      for (final channel in channels) {
+        await CGroupChannel.putWithinTxn(_chat, _isar, channel);
+      }
+    });
+  }
+
   Future<GroupChannel?> getGroupChannel(String channelUrl) async {
     return await CGroupChannel.get(_chat, _isar, channelUrl);
   }
@@ -275,6 +287,18 @@ class DB {
     return await CGroupChannel.getChannels(_chat, _isar, query, offset);
   }
 
+  // Existence-only check for the loadMore hasMore look-ahead — avoids reading and
+  // deserializing a full page just to know if more channels exist. Named distinctly
+  // from getGroupChannelCount()/DBManager.hasGroupChannels() (no-arg count). (CLNP-8914)
+  Future<bool> hasMoreGroupChannels(
+      GroupChannelListQuery query, int? offset) async {
+    return await CGroupChannel.hasChannels(
+        chat: _chat, isar: _isar, query: query, offset: offset);
+  }
+
+  @Deprecated(
+      'Internal API that is no longer used by the SDK; the collection now '
+      'filters in memory.')
   Future<bool> canAddChannel(
       GroupChannelListQuery query, String channelUrl) async {
     return await CGroupChannel.canAddChannel(_chat, _isar, query, channelUrl);

@@ -87,6 +87,14 @@ class CUser {
     return cUser;
   }
 
+  // Raw put WITHOUT opening its own write transaction. Must be called from
+  // within an existing DBManager.write()/writeTxn so a whole channel (and a whole
+  // page of channels) is persisted in a single transaction instead of one
+  // transaction per member/user. (CLNP-8914)
+  static Future<void> putWithinTxn(Isar isar, User user) async {
+    await isar.cUsers.put(CUser.fromUser(user));
+  }
+
   static Future<User?> get(Chat chat, Isar isar, String userId) async {
     final cUser = await isar.cUsers.where().userIdEqualTo(userId).findFirst();
     return await cUser?.toUser(chat, isar);

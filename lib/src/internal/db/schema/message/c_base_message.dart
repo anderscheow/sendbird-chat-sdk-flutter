@@ -162,6 +162,14 @@ class CBaseMessage extends CRootMessage {
     });
   }
 
+  // Raw put WITHOUT opening its own write transaction — call from within an
+  // existing DBManager.write() to coalesce channel writes into one transaction.
+  // (CLNP-8914)
+  static Future<void> putWithinTxn(
+      Chat chat, Isar isar, BaseMessage message) async {
+    await _upsert(chat, isar, message);
+  }
+
   static Future<void> _upsert(Chat chat, Isar isar, BaseMessage message) async {
     if (message is UserMessage) {
       await isar.cUserMessages.put(CUserMessage.fromUserMessage(message));

@@ -137,9 +137,8 @@ class GroupChannelCollection {
         }
 
         if (_query.limit == localChannels.length) {
-          final channels = await _chat.dbManager
-              .getGroupChannels(query: _query, offset: _offset + _query.limit);
-          _hasMore = channels.isNotEmpty;
+          _hasMore = await _chat.dbManager.hasMoreGroupChannels(
+              query: _query, offset: _offset + _query.limit);
         } else {
           _hasMore = false;
         }
@@ -346,19 +345,14 @@ class GroupChannelCollection {
         return _canAddChannel(query: _query, channel: addedChannel);
       }
     } else {
-      //+ DBManager
-      if (_chat.dbManager.isEnabled()) {
-        if (await _chat.dbManager.canAddChannel(
-                query: _query, channelUrl: addedChannel.channelUrl) ==
-            false) {
-          return false;
-        }
-      }
-      //- DBManager
-      else {
-        if (_canAddChannel(query: _query, channel: addedChannel) == false) {
-          return false;
-        }
+      // Filter against the in-memory channel object rather than a per-channel DB
+      // query. The DB variant required the channel to already be persisted, which
+      // forced GroupChannel.fromJson to eagerly upsert every parsed channel
+      // (fire-and-forget) just so this read could find it — a redundant double
+      // write on the back-sync / loadMore / changelog paths. In-memory filtering
+      // removes that dependency and the per-channel DB round-trip. (CLNP-8914)
+      if (_canAddChannel(query: _query, channel: addedChannel) == false) {
+        return false;
       }
     }
 
@@ -459,6 +453,11 @@ class GroupChannelCollection {
       case UnreadChannelFilter.all:
         break;
       case UnreadChannelFilter.unreadMessage:
+        // Match the DB query (isSuperEqualTo(false).unreadMessageCountGreaterThan(0)):
+        // super channels are excluded from the unread filter. (CLNP-8914)
+        if (channel.isSuper) {
+          return false;
+        }
         if (channel.unreadMessageCount <= 0) {
           return false;
         }
@@ -521,13 +520,14 @@ class GroupChannelCollection {
       }
     }
 
-    // [nicknameContainsFilter]
+    // [nicknameContainsFilter] — case-insensitive, to match the DB query. (CLNP-8914)
     if (query.nicknameContainsFilter != null &&
         query.nicknameContainsFilter!.isNotEmpty) {
+      final filter = query.nicknameContainsFilter!.toLowerCase();
       bool found = false;
       for (final member in channel.members) {
         if (member.nickname.isNotEmpty &&
-            member.nickname.contains(query.nicknameContainsFilter!)) {
+            member.nickname.toLowerCase().contains(filter)) {
           found = true;
           break;
         }
@@ -539,67 +539,45 @@ class GroupChannelCollection {
     }
 
     // [userIdsIncludeFilter & queryType]
+    // CLNP-8914: a single shared `found` flag was not reset per user, so AND/exact
+    // filters passed on one match. Check membership per user against the DB query.
     if (query.userIdsIncludeFilter.isNotEmpty) {
-      bool found = false;
       if (query.queryType == GroupChannelListQueryType.and) {
+        // Every requested user must be a member.
         for (final userId in query.userIdsIncludeFilter) {
-          for (final member in channel.members) {
-            if (member.userId == userId) {
-              found = true;
-              break;
-            }
-          }
-          if (!found) {
+          if (!channel.members.any((member) => member.userId == userId)) {
             return false;
           }
         }
       } else if (query.queryType == GroupChannelListQueryType.or) {
-        for (final userId in query.userIdsIncludeFilter) {
-          for (final member in channel.members) {
-            if (member.userId == userId) {
-              found = true;
-              break;
-            }
-          }
-          if (found) {
-            break;
-          }
+        // At least one requested user must be a member.
+        final anyMatch = channel.members.any(
+            (member) => query.userIdsIncludeFilter.contains(member.userId));
+        if (!anyMatch) {
+          return false;
         }
-      }
-
-      if (!found) {
-        return false;
       }
     }
 
-    // [userIdsExactFilter]
+    // [userIdsExactFilter] — set equality: same size AND every requested user is a
+    // member. (CLNP-8914: `found` was not reset per user.)
     if (query.userIdsExactFilter.isNotEmpty) {
       if (channel.members.length != query.userIdsExactFilter.length) {
         return false;
       }
-
-      bool found = false;
       for (final userId in query.userIdsExactFilter) {
-        for (final member in channel.members) {
-          if (member.userId == userId) {
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
+        if (!channel.members.any((member) => member.userId == userId)) {
           return false;
         }
       }
-
-      if (!found) {
-        return false;
-      }
     }
 
-    // [channelNameContainsFilter]
+    // [channelNameContainsFilter] — case-insensitive, to match the DB query. (CLNP-8914)
     if (query.channelNameContainsFilter != null &&
         query.channelNameContainsFilter!.isNotEmpty) {
-      if (channel.name.contains(query.channelNameContainsFilter!) == false) {
+      if (!channel.name
+          .toLowerCase()
+          .contains(query.channelNameContainsFilter!.toLowerCase())) {
         return false;
       }
     }
@@ -613,29 +591,28 @@ class GroupChannelCollection {
     // [metaDataKey & metaDataValueStartsWith]
     // Must call API, because this can not be queried with local cache.
 
-    // [searchQuery & searchFields]
-    if (query.searchQuery != null && query.searchQuery!.isNotEmpty) {
+    // [searchQuery & searchFields] — union (OR) across fields, case-insensitive,
+    // to match the DB query. (CLNP-8914: previously every field had to match, and
+    // matching was case-sensitive.)
+    if (query.searchQuery != null &&
+        query.searchQuery!.isNotEmpty &&
+        query.searchFields.isNotEmpty) {
+      final searchQuery = query.searchQuery!.toLowerCase();
+      bool matched = false;
       for (final searchField in query.searchFields) {
         switch (searchField) {
           case GroupChannelListQuerySearchField.memberNickname:
-            bool found = false;
-            for (final member in channel.members) {
-              if (member.nickname.contains(query.searchQuery!)) {
-                found = true;
-                break;
-              }
-            }
-
-            if (!found) {
-              return false;
-            }
+            matched = channel.members.any((member) =>
+                member.nickname.toLowerCase().contains(searchQuery));
             break;
           case GroupChannelListQuerySearchField.channelName:
-            if (channel.name.contains(query.searchQuery!) == false) {
-              return false;
-            }
+            matched = channel.name.toLowerCase().contains(searchQuery);
             break;
         }
+        if (matched) break;
+      }
+      if (!matched) {
+        return false;
       }
     }
 
@@ -665,19 +642,21 @@ class GroupChannelCollection {
       }
     }
 
-    // [createdBefore]
+    // [createdBefore] — boundary is INCLUSIVE (createdAt <= createdBefore), to
+    // match the server (created_at__lte) and the DB query. (CLNP-8914)
     if (query.createdBefore != null) {
       if (channel.createdAt != null) {
-        if (channel.createdAt! >= query.createdBefore!) {
+        if (channel.createdAt! > query.createdBefore!) {
           return false;
         }
       }
     }
 
-    // [createdAfter]
+    // [createdAfter] — boundary is INCLUSIVE (createdAt >= createdAfter), to match
+    // the server (created_at__gte) and the DB query. (CLNP-8914)
     if (query.createdAfter != null) {
       if (channel.createdAt != null) {
-        if (channel.createdAt! <= query.createdAfter!) {
+        if (channel.createdAt! < query.createdAfter!) {
           return false;
         }
       }
