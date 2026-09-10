@@ -1,3 +1,8 @@
+## v4.10.4 (Sep 10, 2026)
+
+### Improvements
+- Fixed slow `GroupChannelCollection` load when `useCollectionCaching` is enabled
+
 ## v4.10.3 (Sep 4, 2026)
 
 ### Improvements
