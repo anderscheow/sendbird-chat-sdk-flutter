@@ -503,6 +503,12 @@ class GroupChannel extends BaseChannel {
     }
 
     //+ [DBManager]
+    // Persist every deserialized channel to the local cache. This is the single
+    // universal persistence point covering single-channel, bulk-list, changelog
+    // and websocket-sourced channels, so the offline getChannel()/getChannelFromCache
+    // fallback keeps working without a collection. Each write is now one batched
+    // transaction (see DB.upsertGroupChannels), so it no longer causes the
+    // per-entity write storm that made useCollectionCaching slow. (CLNP-8914)
     if (channel.chat.dbManager.isEnabled()) {
       channel.chat.dbManager.upsertGroupChannels([channel]);
     }

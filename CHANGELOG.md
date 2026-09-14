@@ -1,3 +1,20 @@
+## v4.10.4 (Sep 10, 2026)
+
+### Improvements
+- Fixed slow `GroupChannelCollection` load when `useCollectionCaching` is enabled
+
+## v4.10.3 (Sep 4, 2026)
+
+### Improvements
+- Fixed `includeFrozen`/`includeEmpty` being ignored when set to `false` on channel list queries
+- Reduced internal statistics-upload errors and unnecessary background reconnect attempts
+
+## v4.10.2 (Aug 27, 2026)
+
+### Improvements
+- Fixed reconnection issues after repeated session key refreshes
+- `registerPushToken()` returns an error instead of throwing for an empty token
+
 ## v4.10.1 (Aug 21, 2026)
 
 ### Improvements

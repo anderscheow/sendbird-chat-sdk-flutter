@@ -41,6 +41,12 @@ import 'package:sendbird_chat_sdk/src/public/main/query/channel/group_channel_li
 
 import 'schema/message/c_multiple_files_message.dart';
 
+// Thrown inside DB.clear()'s writeTxn to abort (roll back) a clear whose attempt
+// was superseded while _isar.clear() ran; caught and swallowed by clear(). (CLNP-8835)
+class _ClearSupersededException implements Exception {
+  const _ClearSupersededException();
+}
+
 class DB {
   final Chat _chat;
   final Isar _isar;
@@ -58,10 +64,29 @@ class DB {
     });
   }
 
-  Future<void> clear() async {
-    await _isar.writeTxn(() async {
-      await _isar.clear();
-    });
+  // [isValid] gates the destructive clear against a supersede. writeTxn() awaits the
+  // write lock and _isar.clear() then deletes collections asynchronously, so the
+  // generation can change at two points, and both are re-checked: INSIDE the txn
+  // before the delete (skip it) and again AFTER the delete before commit (throw to
+  // ROLL the transaction back). A stale attempt therefore can't wipe the
+  // replacement session's cached data. One tiny residual remains — between the
+  // post-delete check and the commit itself — that would need a shared
+  // generation/clear lock to close entirely. (CLNP-8835)
+  Future<void> clear({bool Function()? isValid}) async {
+    try {
+      await _isar.writeTxn(() async {
+        if (isValid != null && !isValid()) {
+          return;
+        }
+        await _isar.clear();
+        if (isValid != null && !isValid()) {
+          throw const _ClearSupersededException();
+        }
+      });
+    } on _ClearSupersededException {
+      // Superseded while _isar.clear() ran: the transaction rolled back, so the
+      // replacement session's cache is preserved.
+    }
   }
 
   // Login
@@ -241,6 +266,18 @@ class DB {
     await CGroupChannel.upsert(_chat, _isar, channel);
   }
 
+  // Batch-upsert a list of channels in a SINGLE write transaction — one durable
+  // commit for the whole page instead of one per channel (and one per member).
+  // This is the back-sync / loadMore hot path. (CLNP-8914)
+  Future<void> upsertGroupChannels(List<GroupChannel> channels) async {
+    if (channels.isEmpty) return;
+    await _chat.dbManager.write(() async {
+      for (final channel in channels) {
+        await CGroupChannel.putWithinTxn(_chat, _isar, channel);
+      }
+    });
+  }
+
   Future<GroupChannel?> getGroupChannel(String channelUrl) async {
     return await CGroupChannel.get(_chat, _isar, channelUrl);
   }
@@ -250,6 +287,18 @@ class DB {
     return await CGroupChannel.getChannels(_chat, _isar, query, offset);
   }
 
+  // Existence-only check for the loadMore hasMore look-ahead — avoids reading and
+  // deserializing a full page just to know if more channels exist. Named distinctly
+  // from getGroupChannelCount()/DBManager.hasGroupChannels() (no-arg count). (CLNP-8914)
+  Future<bool> hasMoreGroupChannels(
+      GroupChannelListQuery query, int? offset) async {
+    return await CGroupChannel.hasChannels(
+        chat: _chat, isar: _isar, query: query, offset: offset);
+  }
+
+  @Deprecated(
+      'Internal API that is no longer used by the SDK; the collection now '
+      'filters in memory.')
   Future<bool> canAddChannel(
       GroupChannelListQuery query, String channelUrl) async {
     return await CGroupChannel.canAddChannel(_chat, _isar, query, channelUrl);

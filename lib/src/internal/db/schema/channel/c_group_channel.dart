@@ -192,37 +192,60 @@ class CGroupChannel extends CBaseChannel {
       Chat chat, Isar isar, GroupChannel channel) async {
     final cGroupChannel = CGroupChannel.fromGroupChannel(channel);
 
-    // GroupChannel
+    // Persist the channel and ALL of its related records (last message, members,
+    // creator, inviter, last pinned message) inside a SINGLE write transaction.
+    // Previously each of these opened its own transaction (one per member, etc.),
+    // so a single channel cost ~10-15 durable commits and a full back-sync issued
+    // thousands of them. (CLNP-8914)
     await chat.dbManager.write(() async {
-      await isar.cGroupChannels.put(cGroupChannel);
+      await _putWithinTxn(chat, isar, channel, cGroupChannel);
     });
+
+    return cGroupChannel;
+  }
+
+  // Raw put of a channel and its related records WITHOUT opening a transaction.
+  // Must run inside an existing DBManager.write() — used to batch a whole page of
+  // channels into one transaction (see DB.upsertGroupChannels). (CLNP-8914)
+  static Future<void> putWithinTxn(
+      Chat chat, Isar isar, GroupChannel channel) async {
+    await _putWithinTxn(
+        chat, isar, channel, CGroupChannel.fromGroupChannel(channel));
+  }
+
+  static Future<void> _putWithinTxn(
+    Chat chat,
+    Isar isar,
+    GroupChannel channel,
+    CGroupChannel cGroupChannel,
+  ) async {
+    // GroupChannel
+    await isar.cGroupChannels.put(cGroupChannel);
 
     // lastMessage
     if (channel.lastMessage != null) {
-      await CBaseMessage.upsert(chat, isar, channel.lastMessage!);
+      await CBaseMessage.putWithinTxn(chat, isar, channel.lastMessage!);
     }
 
     // members
     for (final member in channel.members) {
-      await CUser.upsert(chat, isar, member);
+      await CUser.putWithinTxn(isar, member);
     }
 
     // creator
     if (channel.creator != null) {
-      await CUser.upsert(chat, isar, channel.creator!);
+      await CUser.putWithinTxn(isar, channel.creator!);
     }
 
     // inviter
     if (channel.inviter != null) {
-      await CUser.upsert(chat, isar, channel.inviter!);
+      await CUser.putWithinTxn(isar, channel.inviter!);
     }
 
     // lastPinnedMessage
     if (channel.lastPinnedMessage != null) {
-      await CBaseMessage.upsert(chat, isar, channel.lastPinnedMessage!);
+      await CBaseMessage.putWithinTxn(chat, isar, channel.lastPinnedMessage!);
     }
-
-    return cGroupChannel;
   }
 
   static Future<GroupChannel?> get(
@@ -232,21 +255,6 @@ class CGroupChannel extends CBaseChannel {
         .channelUrlEqualTo(channelUrl)
         .findFirst();
     return await cGroupChannel?.toGroupChannel(chat, isar);
-  }
-
-  static Future<bool> canAddChannel(
-    Chat chat,
-    Isar isar,
-    GroupChannelListQuery query,
-    String channelUrl,
-  ) async {
-    final groupChannels = await _getChannels(
-      chat: chat,
-      isar: isar,
-      query: query,
-      channelUrl: channelUrl,
-    );
-    return groupChannels.isNotEmpty;
   }
 
   static Future<List<GroupChannel>> getChannels(
@@ -263,12 +271,79 @@ class CGroupChannel extends CBaseChannel {
     );
   }
 
+  // Whether the cached channel with [channelUrl] matches [query]. Retained only
+  // to back the deprecated DB/DBManager.canAddChannel; the collection now filters
+  // in memory via GroupChannelCollection._canAddChannel. (CLNP-8914)
+  static Future<bool> canAddChannel(
+    Chat chat,
+    Isar isar,
+    GroupChannelListQuery query,
+    String channelUrl,
+  ) async {
+    final cGroupChannels = await _queryCChannels(
+      chat: chat,
+      isar: isar,
+      query: query,
+      channelUrl: channelUrl,
+      limitOverride: 1,
+      existsOnly: true,
+    );
+    return cGroupChannels.isNotEmpty;
+  }
+
   static Future<List<GroupChannel>> _getChannels({
     required Chat chat,
     required Isar isar,
     required GroupChannelListQuery query,
     int? offset,
+  }) async {
+    final cGroupChannels = await _queryCChannels(
+      chat: chat,
+      isar: isar,
+      query: query,
+      offset: offset,
+    );
+
+    final List<GroupChannel> channels = [];
+    for (final cGroupChannel in cGroupChannels) {
+      channels.add(await cGroupChannel.toGroupChannel(chat, isar));
+    }
+    return channels;
+  }
+
+  // Whether at least one channel matches [query] at [offset], WITHOUT
+  // deserializing a full page. Used for the loadMore hasMore look-ahead so a
+  // whole page isn't read + toGroupChannel'd (N+1) just to check existence.
+  // (CLNP-8914)
+  static Future<bool> hasChannels({
+    required Chat chat,
+    required Isar isar,
+    required GroupChannelListQuery query,
+    int? offset,
+  }) async {
+    final cGroupChannels = await _queryCChannels(
+      chat: chat,
+      isar: isar,
+      query: query,
+      offset: offset,
+      limitOverride: 1,
+      existsOnly: true,
+    );
+    return cGroupChannels.isNotEmpty;
+  }
+
+  static Future<List<CGroupChannel>> _queryCChannels({
+    required Chat chat,
+    required Isar isar,
+    required GroupChannelListQuery query,
+    int? offset,
+    int? limitOverride,
+    // Restricts the query to a single channel url (used by the deprecated
+    // canAddChannel path).
     String? channelUrl,
+    // Existence-only (hasChannels): skip ordering — emptiness at an offset depends
+    // only on the match COUNT, not the order, so sorting would be wasted. (CLNP-8914)
+    bool existsOnly = false,
   }) async {
     // [includeMetaData]
     // When calling API, this value have to be `true` to make chunk.
@@ -327,8 +402,13 @@ class CGroupChannel extends CBaseChannel {
         })
 
         // superChannelFilter
-        // [SuperChannelFilter.exclusiveChannelOnly]
-        // Must call API, because this can not be queried with local cache.
+        // isExclusive / isBroadcast are stored, so filter them locally to match
+        // the in-memory canAddChannel path (keeps cache read and live add
+        // consistent). (CLNP-8914)
+        .optional(query.superChannelFilter == SuperChannelFilter.exclusiveChannelOnly,
+            (q) {
+          return q.isExclusiveEqualTo(true);
+        })
         .optional(query.superChannelFilter == SuperChannelFilter.superChannelOnly,
             (q) {
           return q.isSuperEqualTo(true);
@@ -337,8 +417,10 @@ class CGroupChannel extends CBaseChannel {
             (q) {
           return q.isSuperEqualTo(false);
         })
-        // [SuperChannelFilter.broadcastChannelOnly]
-        // Must call API, because this can not be queried with local cache.
+        .optional(query.superChannelFilter == SuperChannelFilter.broadcastChannelOnly,
+            (q) {
+          return q.isBroadcastEqualTo(true);
+        })
 
         // publicChannelFilter
         .optional(query.publicChannelFilter == PublicChannelFilter.public, (q) {
@@ -377,9 +459,8 @@ class CGroupChannel extends CBaseChannel {
         })
 
         // customTypeStartsWithFilter
-        .optional(
-            query.customTypeStartsWithFilter != null &&
-                query.customTypeStartsWithFilter!.isNotEmpty, (q) {
+        .optional(query.customTypeStartsWithFilter != null && query.customTypeStartsWithFilter!.isNotEmpty,
+            (q) {
           return q.customTypeStartsWith(query.customTypeStartsWithFilter!);
         })
 
@@ -411,43 +492,55 @@ class CGroupChannel extends CBaseChannel {
         })
 
         // userIdsIncludeFilter & queryType
-        .optional(query.userIdsIncludeFilter.isNotEmpty, (q) {
+        // AND: the channel must contain EVERY listed user — one membersElement per
+        // id, implicitly AND-ed (a single member cannot equal two ids). OR: it must
+        // contain ANY. user_id is matched case-sensitively to mirror the server
+        // (guest_id collation is utf8mb4_bin). (CLNP-8914)
+        .optional(
+            query.userIdsIncludeFilter.isNotEmpty &&
+                query.queryType == GroupChannelListQueryType.and, (q) {
+          var qb = q.membersElement(
+              (m) => m.userIdEqualTo(query.userIdsIncludeFilter.first));
+          for (final userId in query.userIdsIncludeFilter.skip(1)) {
+            qb = qb.membersElement((m) => m.userIdEqualTo(userId));
+          }
+          return qb;
+        })
+        .optional(
+            query.userIdsIncludeFilter.isNotEmpty &&
+                query.queryType == GroupChannelListQueryType.or, (q) {
           return q.membersElement((membersQ) {
             late QueryBuilder<CMember, CMember, QAfterFilterCondition> qb;
             bool isFirst = true;
             for (final userId in query.userIdsIncludeFilter) {
               if (isFirst) {
-                qb = membersQ.userIdEqualTo(userId, caseSensitive: false);
+                qb = membersQ.userIdEqualTo(userId);
                 isFirst = false;
               } else {
-                if (query.queryType == GroupChannelListQueryType.and) {
-                  qb = membersQ.userIdEqualTo(userId, caseSensitive: false);
-                } else if (query.queryType == GroupChannelListQueryType.or) {
-                  qb = qb.or().userIdEqualTo(userId, caseSensitive: false);
-                }
+                qb = qb.or().userIdEqualTo(userId);
               }
             }
             return qb;
           });
         })
 
-        // userIdsExactFilter
+        // userIdsExactFilter — exact set: member count == N AND every listed user
+        // present (one membersElement per id, AND-ed), mirroring the server's
+        // COUNT(...) = N + per-id match. user_id matched case-sensitively. (CLNP-8914)
         .optional(query.userIdsExactFilter.isNotEmpty, (q) {
-          return q
+          var qb = q
               .membersLengthEqualTo(query.userIdsExactFilter.length)
-              .membersElement((membersQ) {
-            late QueryBuilder<CMember, CMember, QAfterFilterCondition> qb;
-            for (final userId in query.userIdsExactFilter) {
-              qb = membersQ.userIdEqualTo(userId);
-            }
-            return qb;
-          });
+              .membersElement(
+                  (m) => m.userIdEqualTo(query.userIdsExactFilter.first));
+          for (final userId in query.userIdsExactFilter.skip(1)) {
+            qb = qb.membersElement((m) => m.userIdEqualTo(userId));
+          }
+          return qb;
         })
 
         // channelNameContainsFilter
-        .optional(
-            query.channelNameContainsFilter != null &&
-                query.channelNameContainsFilter!.isNotEmpty, (q) {
+        .optional(query.channelNameContainsFilter != null && query.channelNameContainsFilter!.isNotEmpty,
+            (q) {
           return q.nameContains(query.channelNameContainsFilter!,
               caseSensitive: false);
         })
@@ -461,9 +554,11 @@ class CGroupChannel extends CBaseChannel {
         // [metaDataKey & metaDataValueStartsWith]
         // Must call API, because this can not be queried with local cache.
 
-        // searchQuery & searchFields
-        .optional(query.searchQuery != null && query.searchQuery!.isNotEmpty,
-            (q) {
+        // searchQuery & searchFields — only apply when both are set. Without the
+        // searchFields guard, an empty searchFields would build an empty group()
+        // and return an uninitialized `late qb` (LateInitializationError). Matches
+        // the in-memory _canAddChannel guard. (CLNP-8914)
+        .optional(query.searchQuery != null && query.searchQuery!.isNotEmpty && query.searchFields.isNotEmpty, (q) {
           return q.group((groupQ) {
             late QueryBuilder<CGroupChannel, CGroupChannel,
                 QAfterFilterCondition> qb;
@@ -525,16 +620,14 @@ class CGroupChannel extends CBaseChannel {
           return q.createdAtGreaterThan(query.createdAfter, include: true);
         })
 
-        // order
-        .optional(query.order == GroupChannelListQueryOrder.chronological, (q) {
+        // order (skipped for existence-only queries)
+        .optional(!existsOnly && query.order == GroupChannelListQueryOrder.chronological, (q) {
           return q.sortByCreatedAtDesc();
         })
-        .optional(query.order == GroupChannelListQueryOrder.latestLastMessage,
-            (q) {
+        .optional(!existsOnly && query.order == GroupChannelListQueryOrder.latestLastMessage, (q) {
           return q.thenByLastMessageCreatedAtDesc().thenByCreatedAtDesc();
         })
-        .optional(query.order == GroupChannelListQueryOrder.channelNameAlphabetical,
-            (q) {
+        .optional(!existsOnly && query.order == GroupChannelListQueryOrder.channelNameAlphabetical, (q) {
           return q.thenByName().thenByCreatedAtDesc();
         })
 
@@ -547,15 +640,10 @@ class CGroupChannel extends CBaseChannel {
         })
 
         // limit
-        .limit(query.limit)
+        .limit(limitOverride ?? query.limit)
         .findAll();
 
-    List<GroupChannel> channels = [];
-    for (final cGroupChannel in cGroupChannels) {
-      final channel = await cGroupChannel.toGroupChannel(chat, isar);
-      channels.add(channel);
-    }
-    return channels;
+    return cGroupChannels;
   }
 
   static Future<void> delete(Chat chat, Isar isar, String channelUrl) async {

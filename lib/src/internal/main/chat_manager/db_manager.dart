@@ -47,6 +47,12 @@ class DBManager {
   late final Isar _isar;
   bool _isInitialized = false;
 
+  // Number of Isar write transactions issued via [write]. Exposed so tests can
+  // guard the CLNP-8914 batching: a channel (with its members/messages) and a
+  // whole upserted page must each persist in exactly ONE transaction, and a
+  // cache read must issue none.
+  int writeTxnCount = 0;
+
   final Chat _chat;
   late final DB _db;
   late final Directory _dbDir;
@@ -152,6 +158,7 @@ class DBManager {
 
   Future<void> write(Function writeFunc, {bool force = false}) async {
     if (isEnabled() || (_isInitialized && force)) {
+      writeTxnCount++;
       try {
         await _db.write(writeFunc);
       } catch (e) {
@@ -231,19 +238,50 @@ class DBManager {
     return null;
   }
 
+  // [isValid] gates EVERY effect of this method — the destructive _db.clear() in
+  // the token-error branch and the ChatContext writes in the cached-login branch.
+  // When supplied (the connect error path passes a generation check), a concurrent
+  // teardown/newer attempt during the DB reads makes it return false, so a stale
+  // attempt neither erases the replacement session's local cache nor resurrects the
+  // torn-down user's state (currentUser/services/session) after a logout or user
+  // switch. In the cached-login branch it also returns null so the caller skips
+  // completion. Each check sits immediately before its effect (no await between).
+  // (CLNP-8835)
   Future<User?> getLoginInfoByException(
-      String userId, SendbirdException e) async {
+    String userId,
+    SendbirdException e, {
+    bool Function()? isValid,
+  }) async {
     User? user;
     if (isEnabled()) {
       if (e.code == SendbirdError.userNotExist ||
           e.code == SendbirdError.accessTokenNotValid ||
           e.code == SendbirdError.accessTokenRevoked) {
-        await _db.clear();
+        // _db.clear() wipes the ENTIRE local cache. If a logout or newer-user
+        // connect superseded this attempt, its token error is stale and must NOT
+        // erase the replacement session's cached login/offline data. Check here to
+        // skip acquiring the write txn when already stale, AND pass isValid so
+        // _db.clear re-checks INSIDE the txn — a supersede can land while awaiting
+        // the write lock (the check-to-clear TOCTOU). (CLNP-8835)
+        if (isValid == null || isValid()) {
+          await _db.clear(isValid: isValid);
+        }
       } else {
         final login = await _db.getLogin(userId);
         if (login != null) {
           user = await _db.getUser(userId);
           if (user != null) {
+            // Fetch every awaited value FIRST (incl. the session key), so the
+            // ChatContext writes below form a single synchronous, uninterruptible
+            // block — then gate them on validity right before applying. Use
+            // cache:false so getSessionKey doesn't write ChatContext.sessionKey
+            // itself (its cache-back would resurrect a logged-out key ungated); the
+            // gated write below owns it. (CLNP-8835)
+            final sessionKey =
+                await _chat.sessionManager.getSessionKey(cache: false);
+            if (isValid != null && !isValid()) {
+              return null;
+            }
             _chat.chatContext.currentUser = user;
             _chat.chatContext.currentUserId = user.userId;
             _chat.chatContext.services = login.services;
@@ -253,10 +291,7 @@ class DBManager {
                 login.maxUnreadCountOnSuperGroup;
             _chat.chatContext.lastConnectedAt = login.lastConnectedAt;
             _chat.chatContext.reconnectConfig = login.reconnectConfig;
-
-            // sessionKey
-            _chat.chatContext.sessionKey =
-                await _chat.sessionManager.getSessionKey();
+            _chat.chatContext.sessionKey = sessionKey;
 
             // reconnectTask
             if (_chat.chatContext.reconnectConfig != null) {
@@ -288,9 +323,8 @@ class DBManager {
 
   Future<void> upsertGroupChannels(List<GroupChannel> channels) async {
     if (isEnabled()) {
-      for (final channel in channels) {
-        await _db.upsertGroupChannel(channel);
-      }
+      // Persist the whole batch in a single write transaction. (CLNP-8914)
+      await _db.upsertGroupChannels(channels);
     }
   }
 
@@ -304,11 +338,27 @@ class DBManager {
     return [];
   }
 
+  // Existence-only look-ahead for hasMore — avoids deserializing a full page.
+  // (CLNP-8914)
+  Future<bool> hasMoreGroupChannels({
+    required GroupChannelListQuery query,
+    int? offset,
+  }) async {
+    if (isEnabled()) {
+      return await _db.hasMoreGroupChannels(query, offset);
+    }
+    return false;
+  }
+
+  @Deprecated(
+      'Internal API that is no longer used by the SDK; the collection now '
+      'filters in memory.')
   Future<bool> canAddChannel({
     required GroupChannelListQuery query,
     required String channelUrl,
   }) async {
     if (isEnabled()) {
+      // ignore: deprecated_member_use_from_same_package
       return await _db.canAddChannel(query, channelUrl);
     }
     return true;
