@@ -639,7 +639,7 @@ class StatManager {
         .toSet()
         .intersection(_sdkStatsAttributeTable.keys.toSet())
         .map((key) => _sdkStatsAttributeTable[key])
-        .whereNotNull()
+        .nonNulls
         .flattened;
     if (statTypes != null) {
       allowedStatTypes.addAll(statTypes);

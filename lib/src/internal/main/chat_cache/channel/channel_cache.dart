@@ -1,6 +1,5 @@
 // Copyright (c) 2023 Sendbird, Inc. All rights reserved.
 
-import 'package:collection/collection.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/chat_cache/cache_service.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/chat_cache/channel/channel_cache_unit.dart';
 import 'package:sendbird_chat_sdk/src/internal/main/chat_cache/channel/meta_data_cache.dart';
@@ -50,7 +49,7 @@ class ChannelCache implements CacheStorage {
   List<BaseChannel> getCachedChannels() {
     return _channelCacheMap.values
         .map((e) => e.channel)
-        .whereNotNull()
+        .nonNulls
         .toList();
   }
 

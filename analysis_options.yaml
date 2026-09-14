@@ -1,0 +1,6 @@
+# Generated Isar/json_serializable sources are excluded: the generators emit
+# calls to @experimental Isar APIs, and the output is overwritten on every
+# `build_runner` run, so findings there are not actionable.
+analyzer:
+  exclude:
+    - "**/*.g.dart"
