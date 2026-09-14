@@ -14,9 +14,9 @@ extension GetCMultipleFilesMessageCollection on Isar {
       this.collection();
 }
 
-final CMultipleFilesMessageSchema = CollectionSchema(
+const CMultipleFilesMessageSchema = CollectionSchema(
   name: r'CMultipleFilesMessage',
-  id: BigInt.parse('6282540580451750083').toInt(),
+  id: 6282540580451750083,
   properties: {
     r'allMetaArrays': PropertySchema(
       id: 0,
@@ -204,7 +204,7 @@ final CMultipleFilesMessageSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'rootId': IndexSchema(
-      id: BigInt.parse('5087693435549841488').toInt(),
+      id: 5087693435549841488,
       name: r'rootId',
       unique: true,
       replace: true,
@@ -217,7 +217,7 @@ final CMultipleFilesMessageSchema = CollectionSchema(
       ],
     ),
     r'messageType_rootId': IndexSchema(
-      id: BigInt.parse('-7060804333380842370').toInt(),
+      id: -7060804333380842370,
       name: r'messageType_rootId',
       unique: false,
       replace: false,
@@ -235,7 +235,7 @@ final CMultipleFilesMessageSchema = CollectionSchema(
       ],
     ),
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: false,
       replace: false,
@@ -248,7 +248,7 @@ final CMultipleFilesMessageSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -286,7 +286,7 @@ final CMultipleFilesMessageSchema = CollectionSchema(
   getId: _cMultipleFilesMessageGetId,
   getLinks: _cMultipleFilesMessageGetLinks,
   attach: _cMultipleFilesMessageAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _cMultipleFilesMessageEstimateSize(
@@ -5240,9 +5240,9 @@ extension CMultipleFilesMessageQueryProperty on QueryBuilder<
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CUploadedFileInfoSchema = Schema(
+const CUploadedFileInfoSchema = Schema(
   name: r'CUploadedFileInfo',
-  id: BigInt.parse('7074409426857052605').toInt(),
+  id: 7074409426857052605,
   properties: {
     r'name': PropertySchema(
       id: 0,
@@ -6038,9 +6038,9 @@ extension CUploadedFileInfoQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CMultipleFilesMessageCreateParamsSchema = Schema(
+const CMultipleFilesMessageCreateParamsSchema = Schema(
   name: r'CMultipleFilesMessageCreateParams',
-  id: BigInt.parse('43571134612513255').toInt(),
+  id: 43571134612513255,
   properties: {
     r'customType': PropertySchema(
       id: 0,
@@ -6068,31 +6068,36 @@ final CMultipleFilesMessageCreateParamsSchema = Schema(
       name: r'mentionedUserIds',
       type: IsarType.stringList,
     ),
-    r'metaArrays': PropertySchema(
+    r'messageInCreateParams': PropertySchema(
       id: 5,
+      name: r'messageInCreateParams',
+      type: IsarType.string,
+    ),
+    r'metaArrays': PropertySchema(
+      id: 6,
       name: r'metaArrays',
       type: IsarType.objectList,
       target: r'CMessageMetaArray',
     ),
     r'parentMessageId': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'parentMessageId',
       type: IsarType.long,
     ),
     r'pushNotificationDeliveryOption': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'pushNotificationDeliveryOption',
       type: IsarType.byte,
       enumMap:
           _CMultipleFilesMessageCreateParamspushNotificationDeliveryOptionEnumValueMap,
     ),
     r'replyToChannel': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'replyToChannel',
       type: IsarType.bool,
     ),
     r'uploadableFileInfoList': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'uploadableFileInfoList',
       type: IsarType.objectList,
       target: r'CUploadableFileInfo',
@@ -6135,6 +6140,12 @@ int _cMultipleFilesMessageCreateParamsEstimateSize(
     }
   }
   {
+    final value = object.messageInCreateParams;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final list = object.metaArrays;
     if (list != null) {
       bytesCount += 3 + list.length * 3;
@@ -6171,17 +6182,18 @@ void _cMultipleFilesMessageCreateParamsSerialize(
   writer.writeBool(offsets[2], object.isPinnedMessage);
   writer.writeByte(offsets[3], object.mentionType.index);
   writer.writeStringList(offsets[4], object.mentionedUserIds);
+  writer.writeString(offsets[5], object.messageInCreateParams);
   writer.writeObjectList<CMessageMetaArray>(
-    offsets[5],
+    offsets[6],
     allOffsets,
     CMessageMetaArraySchema.serialize,
     object.metaArrays,
   );
-  writer.writeLong(offsets[6], object.parentMessageId);
-  writer.writeByte(offsets[7], object.pushNotificationDeliveryOption.index);
-  writer.writeBool(offsets[8], object.replyToChannel);
+  writer.writeLong(offsets[7], object.parentMessageId);
+  writer.writeByte(offsets[8], object.pushNotificationDeliveryOption.index);
+  writer.writeBool(offsets[9], object.replyToChannel);
   writer.writeObjectList<CUploadableFileInfo>(
-    offsets[9],
+    offsets[10],
     allOffsets,
     CUploadableFileInfoSchema.serialize,
     object.uploadableFileInfoList,
@@ -6203,20 +6215,21 @@ CMultipleFilesMessageCreateParams _cMultipleFilesMessageCreateParamsDeserialize(
               reader.readByteOrNull(offsets[3])] ??
           MentionType.users;
   object.mentionedUserIds = reader.readStringList(offsets[4]);
+  object.messageInCreateParams = reader.readStringOrNull(offsets[5]);
   object.metaArrays = reader.readObjectList<CMessageMetaArray>(
-    offsets[5],
+    offsets[6],
     CMessageMetaArraySchema.deserialize,
     allOffsets,
     CMessageMetaArray(),
   );
-  object.parentMessageId = reader.readLongOrNull(offsets[6]);
+  object.parentMessageId = reader.readLongOrNull(offsets[7]);
   object.pushNotificationDeliveryOption =
       _CMultipleFilesMessageCreateParamspushNotificationDeliveryOptionValueEnumMap[
-              reader.readByteOrNull(offsets[7])] ??
+              reader.readByteOrNull(offsets[8])] ??
           PushNotificationDeliveryOption.normal;
-  object.replyToChannel = reader.readBool(offsets[8]);
+  object.replyToChannel = reader.readBool(offsets[9]);
   object.uploadableFileInfoList = reader.readObjectList<CUploadableFileInfo>(
-        offsets[9],
+        offsets[10],
         CUploadableFileInfoSchema.deserialize,
         allOffsets,
         CUploadableFileInfo(),
@@ -6245,21 +6258,23 @@ P _cMultipleFilesMessageCreateParamsDeserializeProp<P>(
     case 4:
       return (reader.readStringList(offset)) as P;
     case 5:
+      return (reader.readStringOrNull(offset)) as P;
+    case 6:
       return (reader.readObjectList<CMessageMetaArray>(
         offset,
         CMessageMetaArraySchema.deserialize,
         allOffsets,
         CMessageMetaArray(),
       )) as P;
-    case 6:
-      return (reader.readLongOrNull(offset)) as P;
     case 7:
+      return (reader.readLongOrNull(offset)) as P;
+    case 8:
       return (_CMultipleFilesMessageCreateParamspushNotificationDeliveryOptionValueEnumMap[
               reader.readByteOrNull(offset)] ??
           PushNotificationDeliveryOption.normal) as P;
-    case 8:
-      return (reader.readBool(offset)) as P;
     case 9:
+      return (reader.readBool(offset)) as P;
+    case 10:
       return (reader.readObjectList<CUploadableFileInfo>(
             offset,
             CUploadableFileInfoSchema.deserialize,
@@ -6991,6 +7006,183 @@ extension CMultipleFilesMessageCreateParamsQueryFilter on QueryBuilder<
   QueryBuilder<
       CMultipleFilesMessageCreateParams,
       CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'messageInCreateParams',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'messageInCreateParams',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'messageInCreateParams',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CMultipleFilesMessageCreateParams,
+          CMultipleFilesMessageCreateParams, QAfterFilterCondition>
+      messageInCreateParamsContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CMultipleFilesMessageCreateParams,
+          CMultipleFilesMessageCreateParams, QAfterFilterCondition>
+      messageInCreateParamsMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'messageInCreateParams',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'messageInCreateParams',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'messageInCreateParams',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      CMultipleFilesMessageCreateParams,
+      CMultipleFilesMessageCreateParams,
       QAfterFilterCondition> metaArraysIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -7399,9 +7591,9 @@ extension CMultipleFilesMessageCreateParamsQueryObject on QueryBuilder<
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CUploadableFileInfoSchema = Schema(
+const CUploadableFileInfoSchema = Schema(
   name: r'CUploadableFileInfo',
-  id: BigInt.parse('-6703378113458311977').toInt(),
+  id: -6703378113458311977,
   properties: {
     r'fileInfo': PropertySchema(
       id: 0,

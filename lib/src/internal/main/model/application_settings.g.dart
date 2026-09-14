@@ -9,7 +9,7 @@ part of 'application_settings.dart';
 ApplicationSettings _$ApplicationSettingsFromJson(Map<String, dynamic> json) =>
     ApplicationSettings(
       configs: json['configs'] as Map<String, dynamic>,
-      hasMore: json['has_more'] as bool,
+      hasMore: json['hasMore'] as bool,
       next: json['next'] as String?,
       ts: (json['ts'] as num?)?.toInt(),
     );

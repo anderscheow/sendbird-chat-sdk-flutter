@@ -8,16 +8,16 @@ part of 'dnd_time_window.dart';
 
 DndTimeWindow _$DndTimeWindowFromJson(Map<String, dynamic> json) =>
     DndTimeWindow(
-      startHour: (json['start_hour'] as num).toInt(),
-      startMin: (json['start_min'] as num).toInt(),
-      endHour: (json['end_hour'] as num).toInt(),
-      endMin: (json['end_min'] as num).toInt(),
+      startHour: (json['startHour'] as num).toInt(),
+      startMin: (json['startMin'] as num).toInt(),
+      endHour: (json['endHour'] as num).toInt(),
+      endMin: (json['endMin'] as num).toInt(),
     );
 
 Map<String, dynamic> _$DndTimeWindowToJson(DndTimeWindow instance) =>
     <String, dynamic>{
-      'start_hour': instance.startHour,
-      'start_min': instance.startMin,
-      'end_hour': instance.endHour,
-      'end_min': instance.endMin,
+      'startHour': instance.startHour,
+      'startMin': instance.startMin,
+      'endHour': instance.endHour,
+      'endMin': instance.endMin,
     };

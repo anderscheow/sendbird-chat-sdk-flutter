@@ -15,7 +15,7 @@ UploadedFileInfo _$UploadedFileInfoFromJson(Map<String, dynamic> json) =>
       thumbnails: (json['thumbnails'] as List<dynamic>?)
           ?.map((e) => Thumbnail.fromJson(e as Map<String, dynamic>))
           .toList(),
-      requireAuth: json['require_auth'] as bool? ?? false,
+      requireAuth: json['requireAuth'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$UploadedFileInfoToJson(UploadedFileInfo instance) =>
@@ -24,6 +24,6 @@ Map<String, dynamic> _$UploadedFileInfoToJson(UploadedFileInfo instance) =>
       'name': instance.name,
       'size': instance.size,
       'type': instance.type,
-      'thumbnails': instance.thumbnails?.map((e) => e.toJson()).toList(),
-      'require_auth': instance.requireAuth,
+      'thumbnails': instance.thumbnails,
+      'requireAuth': instance.requireAuth,
     };

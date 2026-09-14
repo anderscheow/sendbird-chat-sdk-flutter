@@ -13,9 +13,9 @@ extension GetCFileMessageCollection on Isar {
   IsarCollection<CFileMessage> get cFileMessages => this.collection();
 }
 
-final CFileMessageSchema = CollectionSchema(
+const CFileMessageSchema = CollectionSchema(
   name: r'CFileMessage',
-  id: BigInt.parse('5183317174548444251').toInt(),
+  id: 5183317174548444251,
   properties: {
     r'allMetaArrays': PropertySchema(
       id: 0,
@@ -223,7 +223,7 @@ final CFileMessageSchema = CollectionSchema(
   idName: r'id',
   indexes: {
     r'rootId': IndexSchema(
-      id: BigInt.parse('5087693435549841488').toInt(),
+      id: 5087693435549841488,
       name: r'rootId',
       unique: true,
       replace: true,
@@ -236,7 +236,7 @@ final CFileMessageSchema = CollectionSchema(
       ],
     ),
     r'messageType_rootId': IndexSchema(
-      id: BigInt.parse('-7060804333380842370').toInt(),
+      id: -7060804333380842370,
       name: r'messageType_rootId',
       unique: false,
       replace: false,
@@ -254,7 +254,7 @@ final CFileMessageSchema = CollectionSchema(
       ],
     ),
     r'channelUrl': IndexSchema(
-      id: BigInt.parse('6636052684858767397').toInt(),
+      id: 6636052684858767397,
       name: r'channelUrl',
       unique: false,
       replace: false,
@@ -267,7 +267,7 @@ final CFileMessageSchema = CollectionSchema(
       ],
     ),
     r'channelType_channelUrl': IndexSchema(
-      id: BigInt.parse('-5957547153902522682').toInt(),
+      id: -5957547153902522682,
       name: r'channelType_channelUrl',
       unique: false,
       replace: false,
@@ -302,7 +302,7 @@ final CFileMessageSchema = CollectionSchema(
   getId: _cFileMessageGetId,
   getLinks: _cFileMessageGetLinks,
   attach: _cFileMessageAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _cFileMessageEstimateSize(
@@ -5848,9 +5848,9 @@ extension CFileMessageQueryProperty
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CThumbnailSchema = Schema(
+const CThumbnailSchema = Schema(
   name: r'CThumbnail',
-  id: BigInt.parse('9179756824618085965').toInt(),
+  id: 9179756824618085965,
   properties: {
     r'height': PropertySchema(
       id: 0,
@@ -6569,9 +6569,9 @@ extension CThumbnailQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CFileMessageCreateParamsSchema = Schema(
+const CFileMessageCreateParamsSchema = Schema(
   name: r'CFileMessageCreateParams',
-  id: BigInt.parse('-28171588097914807').toInt(),
+  id: -28171588097914807,
   properties: {
     r'customType': PropertySchema(
       id: 0,
@@ -6605,31 +6605,36 @@ final CFileMessageCreateParamsSchema = Schema(
       name: r'mentionedUserIds',
       type: IsarType.stringList,
     ),
-    r'metaArrays': PropertySchema(
+    r'messageInCreateParams': PropertySchema(
       id: 6,
+      name: r'messageInCreateParams',
+      type: IsarType.string,
+    ),
+    r'metaArrays': PropertySchema(
+      id: 7,
       name: r'metaArrays',
       type: IsarType.objectList,
       target: r'CMessageMetaArray',
     ),
     r'parentMessageId': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'parentMessageId',
       type: IsarType.long,
     ),
     r'pushNotificationDeliveryOption': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'pushNotificationDeliveryOption',
       type: IsarType.byte,
       enumMap:
           _CFileMessageCreateParamspushNotificationDeliveryOptionEnumValueMap,
     ),
     r'replyToChannel': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'replyToChannel',
       type: IsarType.bool,
     ),
     r'thumbnailSizes': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'thumbnailSizes',
       type: IsarType.objectList,
       target: r'CSize',
@@ -6672,6 +6677,12 @@ int _cFileMessageCreateParamsEstimateSize(
           bytesCount += value.length * 3;
         }
       }
+    }
+  }
+  {
+    final value = object.messageInCreateParams;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
     }
   }
   {
@@ -6721,17 +6732,18 @@ void _cFileMessageCreateParamsSerialize(
   writer.writeBool(offsets[3], object.isPinnedMessage);
   writer.writeByte(offsets[4], object.mentionType.index);
   writer.writeStringList(offsets[5], object.mentionedUserIds);
+  writer.writeString(offsets[6], object.messageInCreateParams);
   writer.writeObjectList<CMessageMetaArray>(
-    offsets[6],
+    offsets[7],
     allOffsets,
     CMessageMetaArraySchema.serialize,
     object.metaArrays,
   );
-  writer.writeLong(offsets[7], object.parentMessageId);
-  writer.writeByte(offsets[8], object.pushNotificationDeliveryOption.index);
-  writer.writeBool(offsets[9], object.replyToChannel);
+  writer.writeLong(offsets[8], object.parentMessageId);
+  writer.writeByte(offsets[9], object.pushNotificationDeliveryOption.index);
+  writer.writeBool(offsets[10], object.replyToChannel);
   writer.writeObjectList<CSize>(
-    offsets[10],
+    offsets[11],
     allOffsets,
     CSizeSchema.serialize,
     object.thumbnailSizes,
@@ -6758,20 +6770,21 @@ CFileMessageCreateParams _cFileMessageCreateParamsDeserialize(
           reader.readByteOrNull(offsets[4])] ??
       MentionType.users;
   object.mentionedUserIds = reader.readStringList(offsets[5]);
+  object.messageInCreateParams = reader.readStringOrNull(offsets[6]);
   object.metaArrays = reader.readObjectList<CMessageMetaArray>(
-    offsets[6],
+    offsets[7],
     CMessageMetaArraySchema.deserialize,
     allOffsets,
     CMessageMetaArray(),
   );
-  object.parentMessageId = reader.readLongOrNull(offsets[7]);
+  object.parentMessageId = reader.readLongOrNull(offsets[8]);
   object.pushNotificationDeliveryOption =
       _CFileMessageCreateParamspushNotificationDeliveryOptionValueEnumMap[
-              reader.readByteOrNull(offsets[8])] ??
+              reader.readByteOrNull(offsets[9])] ??
           PushNotificationDeliveryOption.normal;
-  object.replyToChannel = reader.readBool(offsets[9]);
+  object.replyToChannel = reader.readBool(offsets[10]);
   object.thumbnailSizes = reader.readObjectList<CSize>(
-    offsets[10],
+    offsets[11],
     CSizeSchema.deserialize,
     allOffsets,
     CSize(),
@@ -6806,21 +6819,23 @@ P _cFileMessageCreateParamsDeserializeProp<P>(
     case 5:
       return (reader.readStringList(offset)) as P;
     case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (reader.readObjectList<CMessageMetaArray>(
         offset,
         CMessageMetaArraySchema.deserialize,
         allOffsets,
         CMessageMetaArray(),
       )) as P;
-    case 7:
-      return (reader.readLongOrNull(offset)) as P;
     case 8:
+      return (reader.readLongOrNull(offset)) as P;
+    case 9:
       return (_CFileMessageCreateParamspushNotificationDeliveryOptionValueEnumMap[
               reader.readByteOrNull(offset)] ??
           PushNotificationDeliveryOption.normal) as P;
-    case 9:
-      return (reader.readBool(offset)) as P;
     case 10:
+      return (reader.readBool(offset)) as P;
+    case 11:
       return (reader.readObjectList<CSize>(
         offset,
         CSizeSchema.deserialize,
@@ -7479,6 +7494,163 @@ extension CFileMessageCreateParamsQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'messageInCreateParams',
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'messageInCreateParams',
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'messageInCreateParams',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+          QAfterFilterCondition>
+      messageInCreateParamsContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'messageInCreateParams',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+          QAfterFilterCondition>
+      messageInCreateParamsMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'messageInCreateParams',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'messageInCreateParams',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
+      QAfterFilterCondition> messageInCreateParamsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'messageInCreateParams',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CFileMessageCreateParams, CFileMessageCreateParams,
       QAfterFilterCondition> metaArraysIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -7863,9 +8035,9 @@ extension CFileMessageCreateParamsQueryObject on QueryBuilder<
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CFileInfoSchema = Schema(
+const CFileInfoSchema = Schema(
   name: r'CFileInfo',
-  id: BigInt.parse('996992686443270943').toInt(),
+  id: 996992686443270943,
   properties: {
     r'fileName': PropertySchema(
       id: 0,
@@ -8658,9 +8830,9 @@ extension CFileInfoQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CSizeSchema = Schema(
+const CSizeSchema = Schema(
   name: r'CSize',
-  id: BigInt.parse('5020865885922142944').toInt(),
+  id: 5020865885922142944,
   properties: {
     r'height': PropertySchema(
       id: 0,

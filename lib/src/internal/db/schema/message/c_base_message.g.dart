@@ -9,9 +9,9 @@ part of 'c_base_message.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CThreadInfoSchema = Schema(
+const CThreadInfoSchema = Schema(
   name: r'CThreadInfo',
-  id: BigInt.parse('-5718643002744313917').toInt(),
+  id: -5718643002744313917,
   properties: {
     r'lastRepliedAt': PropertySchema(
       id: 0,
@@ -524,9 +524,9 @@ extension CThreadInfoQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final COGMetaDataSchema = Schema(
+const COGMetaDataSchema = Schema(
   name: r'COGMetaData',
-  id: BigInt.parse('-7487040563756714992').toInt(),
+  id: -7487040563756714992,
   properties: {
     r'description': PropertySchema(
       id: 0,
@@ -1133,9 +1133,9 @@ extension COGMetaDataQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final COGImageSchema = Schema(
+const COGImageSchema = Schema(
   name: r'COGImage',
-  id: BigInt.parse('4132417177077221336').toInt(),
+  id: 4132417177077221336,
   properties: {
     r'alt': PropertySchema(
       id: 0,
@@ -1961,9 +1961,9 @@ extension COGImageQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CReactionSchema = Schema(
+const CReactionSchema = Schema(
   name: r'CReaction',
-  id: BigInt.parse('4688882985774356514').toInt(),
+  id: 4688882985774356514,
   properties: {
     r'key': PropertySchema(
       id: 0,
@@ -2607,9 +2607,9 @@ extension CReactionQueryObject
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-final CScheduledInfoSchema = Schema(
+const CScheduledInfoSchema = Schema(
   name: r'CScheduledInfo',
-  id: BigInt.parse('-697940854651714003').toInt(),
+  id: -697940854651714003,
   properties: {
     r'scheduledAt': PropertySchema(
       id: 0,

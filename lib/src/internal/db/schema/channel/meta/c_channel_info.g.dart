@@ -13,9 +13,9 @@ extension GetCChannelInfoCollection on Isar {
   IsarCollection<CChannelInfo> get cChannelInfos => this.collection();
 }
 
-final CChannelInfoSchema = CollectionSchema(
+const CChannelInfoSchema = CollectionSchema(
   name: r'CChannelInfo',
-  id: BigInt.parse('1788819051338150060').toInt(),
+  id: 1788819051338150060,
   properties: {
     r'isChannelBackSyncCompleted': PropertySchema(
       id: 0,
@@ -39,7 +39,7 @@ final CChannelInfoSchema = CollectionSchema(
   getId: _cChannelInfoGetId,
   getLinks: _cChannelInfoGetLinks,
   attach: _cChannelInfoAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _cChannelInfoEstimateSize(

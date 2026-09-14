@@ -8,7 +8,7 @@ part of 'og_image.dart';
 
 OGImage _$OGImageFromJson(Map<String, dynamic> json) => OGImage(
       url: json['url'] as String?,
-      secureUrl: json['secure_url'] as String?,
+      secureUrl: json['secureUrl'] as String?,
       type: json['type'] as String?,
       alt: json['alt'] as String?,
       width: (json['width'] as num?)?.toInt() ?? 0,
@@ -17,7 +17,7 @@ OGImage _$OGImageFromJson(Map<String, dynamic> json) => OGImage(
 
 Map<String, dynamic> _$OGImageToJson(OGImage instance) => <String, dynamic>{
       'url': instance.url,
-      'secure_url': instance.secureUrl,
+      'secureUrl': instance.secureUrl,
       'type': instance.type,
       'alt': instance.alt,
       'width': instance.width,
