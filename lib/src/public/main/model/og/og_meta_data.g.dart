@@ -20,5 +20,5 @@ Map<String, dynamic> _$OGMetaDataToJson(OGMetaData instance) =>
       'og:title': instance.title,
       'og:url': instance.url,
       'og:description': instance.description,
-      'og:image': instance.ogImage,
+      'og:image': instance.ogImage?.toJson(),
     };

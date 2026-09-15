@@ -11,7 +11,7 @@ UnreadMessageCountInfo _$UnreadMessageCountInfoFromJson(
     UnreadMessageCountInfo(
       all: (json['all'] as num?)?.toInt() ?? 0,
       feed: (json['feed'] as num?)?.toInt() ?? 0,
-      customTypes: (json['customTypes'] as Map<String, dynamic>?)?.map(
+      customTypes: (json['custom_types'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, (e as num).toInt()),
           ) ??
           const {},

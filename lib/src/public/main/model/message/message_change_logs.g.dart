@@ -12,6 +12,6 @@ MessageChangeLogs _$MessageChangeLogsFromJson(Map<String, dynamic> json) =>
           ? []
           : toRootMessageList(json['updated'] as List),
       deletedMessageIds: toDeletedMessageIds(json['deleted'] as List),
-      hasMore: json['hasMore'] as bool? ?? false,
+      hasMore: json['has_more'] as bool? ?? false,
       token: json['next'] as String?,
     );

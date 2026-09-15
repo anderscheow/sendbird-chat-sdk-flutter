@@ -9,41 +9,42 @@ part of 'multiple_files_message.dart';
 MultipleFilesMessage _$MultipleFilesMessageFromJson(
         Map<String, dynamic> json) =>
     MultipleFilesMessage(
-      channelUrl: json['channelUrl'] as String,
+      channelUrl: json['channel_url'] as String,
       channelType: $enumDecodeNullable(
-              _$ChannelTypeEnumMap, json['channelType'],
+              _$ChannelTypeEnumMap, json['channel_type'],
               unknownValue: ChannelType.group) ??
           ChannelType.group,
-      messageId: (json['messageId'] as num?)?.toInt() ?? 0,
+      messageId: (json['message_id'] as num?)?.toInt() ?? 0,
       files: (json['files'] as List<dynamic>)
           .map((e) => UploadedFileInfo.fromJson(e as Map<String, dynamic>))
           .toList(),
-      requireAuth: json['requireAuth'] as bool? ?? false,
-      requestId: json['requestId'] as String?,
+      requireAuth: json['require_auth'] as bool? ?? false,
+      requestId: json['request_id'] as String?,
       message: json['message'] as String?,
       sendingStatus:
-          $enumDecodeNullable(_$SendingStatusEnumMap, json['sendingStatus']),
+          $enumDecodeNullable(_$SendingStatusEnumMap, json['sending_status']),
       sender: json['user'] == null
           ? null
           : Sender.fromJson(json['user'] as Map<String, dynamic>),
-      mentionedUsers: (json['mentionedUsers'] as List<dynamic>?)
+      mentionedUsers: (json['mentioned_users'] as List<dynamic>?)
               ?.map((e) => User.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       mentionType: $enumDecodeNullable(
-              _$MentionTypeEnumMap, json['mentionType'],
+              _$MentionTypeEnumMap, json['mention_type'],
               unknownValue: MentionType.users) ??
           MentionType.users,
-      createdAt: (json['createdAt'] as num?)?.toInt() ?? 0,
-      updatedAt: (json['updatedAt'] as num?)?.toInt() ?? 0,
-      parentMessageId: (json['parentMessageId'] as num?)?.toInt(),
-      threadInfo: json['threadInfo'] == null
+      createdAt: (json['created_at'] as num?)?.toInt() ?? 0,
+      updatedAt: (json['updated_at'] as num?)?.toInt() ?? 0,
+      parentMessageId: (json['parent_message_id'] as num?)?.toInt(),
+      threadInfo: json['thread_info'] == null
           ? null
-          : ThreadInfo.fromJson(json['threadInfo'] as Map<String, dynamic>),
-      customType: json['customType'] as String?,
+          : ThreadInfo.fromJson(json['thread_info'] as Map<String, dynamic>),
+      customType: json['custom_type'] as String?,
       messageSurvivalSeconds:
-          (json['messageSurvivalSeconds'] as num?)?.toInt() ?? -1,
-      forceUpdateLastMessage: json['forceUpdateLastMessage'] as bool? ?? false,
+          (json['message_survival_seconds'] as num?)?.toInt() ?? -1,
+      forceUpdateLastMessage:
+          json['force_update_last_message'] as bool? ?? false,
       isSilent: json['silent'] as bool? ?? false,
       isOperatorMessage: json['is_op_msg'] as bool? ?? false,
       data: TypeChecker.fromJsonToNullableString(json['data']),
@@ -61,42 +62,44 @@ MultipleFilesMessage _$MultipleFilesMessageFromJson(
           .toList()
       ..extendedMessage =
           json['extended_message'] as Map<String, dynamic>? ?? {}
-      ..previousMessageId = (json['previousMessageId'] as num?)?.toInt()
+      ..previousMessageId = (json['previous_message_id'] as num?)?.toInt()
       ..isReplyToChannel = json['is_reply_to_channel'] as bool? ?? false
-      ..errorCode = (json['errorCode'] as num?)?.toInt();
+      ..errorCode = (json['error_code'] as num?)?.toInt();
 
 Map<String, dynamic> _$MultipleFilesMessageToJson(
         MultipleFilesMessage instance) =>
     <String, dynamic>{
-      'channelUrl': instance.channelUrl,
-      'channelType': _$ChannelTypeEnumMap[instance.channelType]!,
+      'channel_url': instance.channelUrl,
+      'channel_type': _$ChannelTypeEnumMap[instance.channelType]!,
       'data': instance.data,
-      'customType': instance.customType,
-      'mentionType': _$MentionTypeEnumMap[instance.mentionType]!,
-      'mentionedUsers': instance.mentionedUsers,
-      'sorted_metaarray': instance.allMetaArrays,
+      'custom_type': instance.customType,
+      'mention_type': _$MentionTypeEnumMap[instance.mentionType]!,
+      'mentioned_users':
+          instance.mentionedUsers.map((e) => e.toJson()).toList(),
+      'sorted_metaarray':
+          instance.allMetaArrays?.map((e) => e.toJson()).toList(),
       'extended_message': instance.extendedMessage,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'messageId': instance.messageId,
-      'previousMessageId': instance.previousMessageId,
-      'requestId': instance.requestId,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'message_id': instance.messageId,
+      'previous_message_id': instance.previousMessageId,
+      'request_id': instance.requestId,
       'message': instance.message,
-      'sendingStatus': _$SendingStatusEnumMap[instance.sendingStatus],
+      'sending_status': _$SendingStatusEnumMap[instance.sendingStatus],
       'is_reply_to_channel': instance.isReplyToChannel,
-      'parentMessageId': instance.parentMessageId,
-      'parent_message_info': instance.parentMessage,
-      'threadInfo': instance.threadInfo,
-      'messageSurvivalSeconds': instance.messageSurvivalSeconds,
+      'parent_message_id': instance.parentMessageId,
+      'parent_message_info': instance.parentMessage?.toJson(),
+      'thread_info': instance.threadInfo?.toJson(),
+      'message_survival_seconds': instance.messageSurvivalSeconds,
       'silent': instance.isSilent,
-      'errorCode': instance.errorCode,
+      'error_code': instance.errorCode,
       'is_op_msg': instance.isOperatorMessage,
-      'og_tag': instance.ogMetaData,
-      'reactions': instance.reactions,
-      'forceUpdateLastMessage': instance.forceUpdateLastMessage,
-      'user': instance.sender,
-      'files': instance.files,
-      'requireAuth': instance.requireAuth,
+      'og_tag': instance.ogMetaData?.toJson(),
+      'reactions': instance.reactions?.map((e) => e.toJson()).toList(),
+      'force_update_last_message': instance.forceUpdateLastMessage,
+      'user': instance.sender?.toJson(),
+      'files': instance.files.map((e) => e.toJson()).toList(),
+      'require_auth': instance.requireAuth,
     };
 
 const _$ChannelTypeEnumMap = {

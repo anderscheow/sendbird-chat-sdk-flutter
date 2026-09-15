@@ -9,17 +9,17 @@ part of 'reaction_event.dart';
 ReactionEvent _$ReactionEventFromJson(Map<String, dynamic> json) =>
     ReactionEvent(
       channelType: $enumDecodeNullable(
-              _$ChannelTypeEnumMap, json['channelType'],
+              _$ChannelTypeEnumMap, json['channel_type'],
               unknownValue: ChannelType.group) ??
           ChannelType.group,
-      channelUrl: json['channelUrl'] as String? ?? '',
+      channelUrl: json['channel_url'] as String? ?? '',
       messageId: (json['msg_id'] as num?)?.toInt() ?? 0,
       key: json['reaction'] as String? ?? '',
-      userId: json['userId'] as String? ?? '',
+      userId: json['user_id'] as String? ?? '',
       operation: $enumDecodeNullable(
               _$ReactionEventActionEnumMap, json['operation']) ??
           ReactionEventAction.delete,
-      updatedAt: (json['updatedAt'] as num?)?.toInt() ?? 0,
+      updatedAt: (json['updated_at'] as num?)?.toInt() ?? 0,
     );
 
 const _$ChannelTypeEnumMap = {

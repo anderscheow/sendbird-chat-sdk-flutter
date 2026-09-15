@@ -7,22 +7,22 @@ part of 'poll_option.dart';
 // **************************************************************************
 
 PollOption _$PollOptionFromJson(Map<String, dynamic> json) => PollOption(
-      pollId: (json['pollId'] as num).toInt(),
+      pollId: (json['poll_id'] as num).toInt(),
       id: (json['id'] as num).toInt(),
       text: json['text'] as String,
-      createdBy: json['createdBy'] as String?,
-      createdAt: (json['createdAt'] as num).toInt(),
-      voteCount: (json['voteCount'] as num).toInt(),
-      updatedAt: (json['updatedAt'] as num).toInt(),
+      createdBy: json['created_by'] as String?,
+      createdAt: (json['created_at'] as num).toInt(),
+      voteCount: (json['vote_count'] as num).toInt(),
+      updatedAt: (json['updated_at'] as num).toInt(),
     );
 
 Map<String, dynamic> _$PollOptionToJson(PollOption instance) =>
     <String, dynamic>{
-      'pollId': instance.pollId,
+      'poll_id': instance.pollId,
       'id': instance.id,
       'text': instance.text,
-      'createdBy': instance.createdBy,
-      'createdAt': instance.createdAt,
-      'voteCount': instance.voteCount,
-      'updatedAt': instance.updatedAt,
+      'created_by': instance.createdBy,
+      'created_at': instance.createdAt,
+      'vote_count': instance.voteCount,
+      'updated_at': instance.updatedAt,
     };

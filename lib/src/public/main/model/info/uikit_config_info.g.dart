@@ -8,5 +8,5 @@ part of 'uikit_config_info.dart';
 
 UIKitConfigInfo _$UIKitConfigInfoFromJson(Map<String, dynamic> json) =>
     UIKitConfigInfo(
-      lastUpdatedAt: (json['lastUpdatedAt'] as num?)?.toInt() ?? 0,
+      lastUpdatedAt: (json['last_updated_at'] as num?)?.toInt() ?? 0,
     );

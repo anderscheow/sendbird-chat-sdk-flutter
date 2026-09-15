@@ -1,0 +1,29 @@
+# Restores the json_serializable configuration that was dropped upstream in
+# commit 7ba8dff ("4.0.0"). The checked-in *.g.dart files were generated with
+# these options, but the file backing them was deleted, so any later
+# `build_runner` run silently regenerated them with json_serializable defaults.
+#
+# Two of these options are NOT defaults and are load-bearing for the wire
+# protocol -- Sendbird's REST/WebSocket API speaks snake_case:
+#
+#   field_rename: snake     (default: none)  -> 'channel_url', not 'channelUrl'
+#   explicit_to_json: true  (default: false) -> nested models emit .toJson()
+#
+# The remaining options match current json_serializable defaults and are listed
+# explicitly on purpose: this SDK's serialization is a public wire contract, so
+# it must not drift when a generator upgrade changes a default.
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          any_map: false
+          checked: false
+          create_factory: true
+          create_to_json: true
+          disallow_unrecognized_keys: false
+          explicit_to_json: true
+          field_rename: snake
+          generic_argument_factories: false
+          ignore_unannotated: false
+          include_if_null: true

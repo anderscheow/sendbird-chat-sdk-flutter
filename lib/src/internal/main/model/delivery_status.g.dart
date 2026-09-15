@@ -8,7 +8,7 @@ part of 'delivery_status.dart';
 
 DeliveryStatus _$DeliveryStatusFromJson(Map<String, dynamic> json) =>
     DeliveryStatus(
-      channelUrl: json['channelUrl'] as String,
+      channelUrl: json['channel_url'] as String,
       updatedDeliveryStatus: (json['updated'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, (e as num).toInt()),
           ) ??
